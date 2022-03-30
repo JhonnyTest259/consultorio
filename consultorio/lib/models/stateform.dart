@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class StateForm with ChangeNotifier {
   bool _estado = false;
 
-  bool get Estado => _estado;
+  bool get estadoForm => _estado;
 
-  void onChange(valor) {
+  set estadoForm(valor) {
     _estado = valor;
     notifyListeners();
   }

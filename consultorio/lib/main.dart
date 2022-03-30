@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-var routes = <String, WidgetBuilder>{
+final routes = <String, WidgetBuilder>{
   "/welcome": (BuildContext context) => HomePage(),
   "/form": (BuildContext context) => FormPage(),
   "/help": (BuildContext context) => HelpPage(),

@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consultorio/pages/home/home_page.dart';
-import 'package:consultorio/routes/navegate.dart';
-import 'package:consultorio/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/user.dart';
+import '../models/stateform.dart';
 import '../services/getState.dart';
 
 class StatusPage extends StatefulWidget {
@@ -18,6 +14,7 @@ class _StatusPageState extends State<StatusPage> {
   bool _visible = true;
   @override
   Widget build(BuildContext context) {
+    final estadoFrom = Provider.of<StateForm>(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
@@ -61,6 +58,8 @@ class _StatusPageState extends State<StatusPage> {
                     setState(() {
                       _visible = !_visible;
                     });
+                    estadoFrom.estadoForm = false;
+                    //Navigator.of(context).pop();
                   },
                 ),
               ),

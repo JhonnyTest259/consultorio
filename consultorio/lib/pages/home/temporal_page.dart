@@ -1,22 +1,44 @@
 import 'dart:async';
 
+import 'package:after_layout/after_layout.dart';
+import 'package:consultorio/pages/wrapper.dart';
 import 'package:consultorio/routes/navegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TemporalPage extends StatefulWidget {
   @override
   State<TemporalPage> createState() => _TemporalPageState();
 }
 
-class _TemporalPageState extends State<TemporalPage> {
+class _TemporalPageState extends State<TemporalPage>
+    with AfterLayoutMixin<TemporalPage> {
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      Timer(Duration(seconds: 3), () {
+        Navigator.of(context).pushReplacement(
+            new MaterialPageRoute(builder: (context) => new Wrapper()));
+        print('Mostrado una vez');
+      });
+    } else {
+      await prefs.setBool('seen', true);
+    }
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    /*  Timer(Duration(seconds: 3), () {
       Navigate.goToWrapper(context);
-    });
+    }); */
   }
 
   @override
