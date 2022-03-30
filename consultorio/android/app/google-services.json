@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "829658588099",
+    "project_id": "consultorio-39ee2",
+    "storage_bucket": "consultorio-39ee2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829658588099:android:3586e328ac4d57d1f11376",
+        "android_client_info": {
+          "package_name": "com.example.consultorio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829658588099-cm3kap963nj03cddm2t45p9e7ntob30p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_3YOAbRrPbMtlO1MXpTMu1kDdLzF_VAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829658588099-cm3kap963nj03cddm2t45p9e7ntob30p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
