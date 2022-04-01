@@ -14,20 +14,23 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-      create: (_) => StateForm(),
-    ),
-  ], child: MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<MyUser?>.value(
-      initialData: null,
-      value: AuthService().user,
+    return MultiProvider(
+      providers: [
+        StreamProvider<MyUser?>.value(
+          initialData: null,
+          value: AuthService().user,
+        ),
+        ChangeNotifierProvider(
+          create: (_) => StateForm(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ConsultorioJuridico',

@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: Container(
+          width: double.infinity,
+          height: double.infinity,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
@@ -25,70 +27,59 @@ class _HomePageState extends State<HomePage> {
               colors: [Color(0xFFFFF4EA), Color(0xFFBCB8B5)],
             ),
           ),
-          child: Container(
-            height: double.infinity,
-            width: double.infinity,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 70,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _EntryCircle(),
+              MaterialButton(
+                color: Color(0xFF72828E),
+                elevation: 14.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
                 ),
-                _EntryCircle(),
-                SizedBox(
-                  height: 90,
-                ),
-                MaterialButton(
-                  color: Color(0xFF72828E),
-                  elevation: 14.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                  child: Text(
-                    'Ingresar',
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      color: Color(0xFFFFFFFF),
-                    ),
-                  ),
-                  onPressed: () async {
-                    dynamic result = await _auth.SignInAnon();
-                    if (result == null) {
-                      print('Error signing in');
-                    } else {
-                      print('signed in');
-                      print(result.uid);
-                    }
-
-                    //Navigate.goToform(context);
-                  },
-                ),
-                SizedBox(height: 96.0),
-                MaterialButton(
-                  height: 49,
-                  minWidth: 85,
-                  elevation: 14.0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0)),
-                  child: Text(
-                    'Ayuda',
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      color: Colors.brown,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigate.goToHelp(context);
-                  },
-                ),
-                const Text(
-                  'Al ingresar, ha aceptado términos y condiciones.',
+                child: Text(
+                  'Ingresar',
                   style: TextStyle(
-                    fontSize: 12.0,
+                    fontSize: 22.0,
+                    color: Color(0xFFFFFFFF),
+                  ),
+                ),
+                onPressed: () async {
+                  dynamic result = await _auth.SignInAnon();
+                  if (result == null) {
+                    print('Error signing in');
+                  } else {
+                    print('signed in');
+                    print(result.uid);
+                  }
+                  //Navigate.goToform(context);
+                },
+              ),
+              MaterialButton(
+                elevation: 14.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Text(
+                  'ayuda',
+                  style: TextStyle(
+                    fontSize: 19.0,
                     color: Colors.brown,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
+                onPressed: () {
+                  Navigate.goToHelp(context);
+                },
+              ),
+              Text(
+                'Al ingresar, ha aceptado términos y condiciones.',
+                style: TextStyle(
+                  fontSize: 13.0,
+                  color: Colors.brown,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       ),
