@@ -14,7 +14,7 @@ class _StatusPageState extends State<StatusPage> {
   bool _visible = true;
   @override
   Widget build(BuildContext context) {
-    final estadoFrom = Provider.of<StateForm>(context);
+    final estadoForm = Provider.of<StateForm>(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
@@ -46,9 +46,8 @@ class _StatusPageState extends State<StatusPage> {
                   setState(() {
                     _visible = !_visible;
                   });
-                  estadoFrom.estadoForm = false;
+                  estadoForm.stateForm = 'no';
 
-                  estadoFrom.existeForm = '';
                   //Navigator.of(context).pop();
                 },
               ),

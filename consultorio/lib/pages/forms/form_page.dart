@@ -38,7 +38,7 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
-    final estadoFrom = Provider.of<StateForm>(context);
+    final estadoForm = Provider.of<StateForm>(context);
 
     return Scaffold(
       appBar: PreferredSize(
@@ -112,7 +112,7 @@ class _FormPageState extends State<FormPage> {
                             _descripcionConsulta,
                             _estado);
 
-                        estadoFrom.estadoForm = true;
+                        estadoForm.stateForm = 'si';
                       },
                     ),
                   ],

@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:consultorio/models/stateform.dart';
 import 'package:consultorio/models/user.dart';
 import 'package:consultorio/pages/forms/form_page.dart';
 import 'package:consultorio/pages/info/help_page.dart';
-import 'package:consultorio/pages/home/temporal_page.dart';
+import 'package:consultorio/pages/home/splash_screen.dart';
 import 'package:consultorio/pages/status_page.dart';
 import 'package:consultorio/pages/home/home_page.dart';
 import 'package:consultorio/pages/wrapper.dart';

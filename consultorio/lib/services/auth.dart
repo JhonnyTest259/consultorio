@@ -11,11 +11,11 @@ class AuthService {
   }
 
   //auth change user stream
-
   Stream<MyUser?> get user {
-    return _auth
+    Stream<MyUser?> prueba = _auth
         .authStateChanges()
         .map((User? user) => _userfromFirebaseUser(user));
+    return prueba;
   }
 
   //sign in anon

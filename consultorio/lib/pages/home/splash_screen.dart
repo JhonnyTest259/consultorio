@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultorio/pages/wrapper.dart';
-import 'package:consultorio/routes/navegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../models/stateform.dart';
 import '../../models/user.dart';
 
@@ -25,12 +23,43 @@ class _TemporalPageState extends State<TemporalPage>
 
     if (_seen) {
       Timer(Duration(seconds: 3), () {
-        Navigator.of(context).pushReplacement(
-            new MaterialPageRoute(builder: (context) => new Wrapper()));
-        print('Mostrado una vez');
+        Navigator.of(context)
+            .pushReplacement(new MaterialPageRoute(builder: (context) {
+          final user = Provider.of<MyUser?>(context);
+          final estadoForm = Provider.of<StateForm>(context);
+
+          if (user != null) {
+            while (estadoForm.estadoForm) {
+              FirebaseFirestore.instance
+                  .collection('solicitudes')
+                  .where('uid', isEqualTo: user.uid)
+                  .get()
+                  .then((QuerySnapshot querySnapchot) {
+                querySnapchot.docs.forEach((doc) {
+                  if (doc['estado'] != '') {
+                    estadoForm.stateForm = 'si';
+                    print(estadoForm.stateForm);
+                  } else {
+                    estadoForm.stateForm = 'no';
+                    print('no');
+                  }
+                });
+              });
+
+              estadoForm.estadoForm = false;
+            }
+          } else {
+            print('no hay aun');
+          }
+          return Wrapper();
+        }));
+
+        //GetStatus(user);
       });
     } else {
       await prefs.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => new Wrapper()));
     }
   }
 
@@ -41,9 +70,6 @@ class _TemporalPageState extends State<TemporalPage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    /*  Timer(Duration(seconds: 3), () {
-      Navigate.goToWrapper(context);
-    }); */
   }
 
   @override
@@ -76,7 +102,7 @@ class _TemporalPageState extends State<TemporalPage>
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
+            children: const <Widget>[
               CircularProgressIndicator(
                 color: Colors.white,
               ),

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultorio/models/user.dart';
 import 'package:consultorio/pages/forms/form_page.dart';
 import 'package:consultorio/pages/home/home_page.dart';
@@ -18,31 +17,9 @@ class Wrapper extends StatelessWidget {
 
     //return either home or Authenticate widget
     if (user != null) {
+      print('DESDE EL WRAPPER ${estadoForm.stateForm}');
       //con esto podemos ver si ya se envio el formulario
-      try {
-        //intenta buscar en la base de datos si hay una solicitud con el id proporcionado, para luego
-        //obtener el campo estado
-        FirebaseFirestore.instance
-            .collection('solicitudes')
-            .where('uid', isEqualTo: user.uid)
-            .get()
-            .then((QuerySnapshot querySnapshot) {
-          querySnapshot.docs.forEach((doc) {
-            if (doc['estado'] == 'Enviado') {
-              estadoForm.existeForm = 'holi';
-            } else {
-              estadoForm.existeForm = 'no';
-            }
-          });
-        });
-      } catch (e) {
-        print('CHALE NO FUNCIONA' + e.toString());
-      }
-
-      print('funcionaaaaaaaaa  plis ${estadoForm.existeForm}');
-      //(estadoForm.existeForm == 'holi') ? print('SI HAY') : print('NONAS NO');
-
-      if (estadoForm.estadoForm || estadoForm.existeForm == 'holi') {
+      if (estadoForm.stateForm == 'si') {
         return StatusPage();
       } else {
         print('Hay una sesion');
