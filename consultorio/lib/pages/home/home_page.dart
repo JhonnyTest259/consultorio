@@ -68,6 +68,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Bienvenido, ingrese su consulta'),
+                  ));
                   Navigate.goToHelp(context);
                 },
               ),

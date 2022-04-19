@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:consultorio/models/stateform.dart';
 import 'package:consultorio/pages/wrapper.dart';
 import 'package:consultorio/routes/navegate.dart';
@@ -18,7 +20,6 @@ class _FormPageState extends State<FormPage> {
   String _identificacion = '';
   String _salario = '';
   String _edad = '';
-  String _estadoCivil = '';
   String _barrioResidencia = '';
   String _direccionCasa = '';
   String _telefonoCasa = '';
@@ -26,6 +27,17 @@ class _FormPageState extends State<FormPage> {
   String _email = '';
   String _descripcionConsulta = '';
   String _estado = 'Enviado';
+
+  List<String> _estadoCivil = [
+    'Seleccion',
+    'Casado',
+    'Soltero',
+    'Viudo',
+  ];
+
+  String _opcionSeleccionada = 'Seleccion';
+
+  final _formKey = GlobalKey<FormState>();
 
   bool sendForm = false;
 
@@ -39,7 +51,6 @@ class _FormPageState extends State<FormPage> {
   Widget build(BuildContext context) {
     final user = Provider.of<MyUser?>(context);
     final estadoForm = Provider.of<StateForm>(context);
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
@@ -60,62 +71,85 @@ class _FormPageState extends State<FormPage> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 32.0, right: 32.0),
-                child: Column(
-                  children: [
-                    _crearNombre(),
-                    Divider(),
-                    _crearIdentificacion(),
-                    Divider(),
-                    _crearSalario(),
-                    Divider(),
-                    _crearEdad(),
-                    Divider(),
-                    _crearEstadoCivil(),
-                    Divider(),
-                    _crearBarrio(),
-                    Divider(),
-                    _crearDireccionCasa(),
-                    Divider(),
-                    _crearTelefono(),
-                    Divider(),
-                    _crearDireccionTrabajo(),
-                    Divider(),
-                    _crearEmail(),
-                    Divider(),
-                    _crearDescripcion(),
-                    Divider(),
-                    MaterialButton(
-                      color: Color(0xFF72828E),
-                      elevation: 14.0,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      child: const Text(
-                        'Enviar',
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Color(0xFFFFFFFF),
-                        ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      _crearNombre(),
+                      Divider(),
+                      _crearIdentificacion(),
+                      Divider(),
+                      _crearSalario(),
+                      Divider(),
+                      _crearEdad(),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Estado civil:',
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                color: Color.fromARGB(255, 114, 114, 114)),
+                          ),
+                          SizedBox(width: 25.0),
+                          _crearEstadoCivil(),
+                          Divider(),
+                        ],
                       ),
-                      onPressed: () async {
-                        await DatabaseService(uid: user!.uid).insertDataUser(
-                            user.uid.toString(),
-                            _nombre,
-                            _identificacion,
-                            _salario,
-                            _edad,
-                            _estadoCivil,
-                            _barrioResidencia,
-                            _direccionCasa,
-                            _telefonoCasa,
-                            _direccionTrabajo,
-                            _email,
-                            _descripcionConsulta,
-                            _estado);
+                      _crearBarrio(),
+                      Divider(),
+                      _crearDireccionCasa(),
+                      Divider(),
+                      _crearTelefono(),
+                      Divider(),
+                      _crearDireccionTrabajo(),
+                      Divider(),
+                      _crearEmail(),
+                      Divider(),
+                      _crearDescripcion(),
+                      Divider(),
+                      MaterialButton(
+                        color: Color(0xFF72828E),
+                        elevation: 14.0,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        child: const Text(
+                          'Enviar',
+                          style: TextStyle(
+                            fontSize: 22.0,
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await DatabaseService(uid: user!.uid)
+                                .insertDataUser(
+                                    user.uid.toString(),
+                                    _nombre,
+                                    _identificacion,
+                                    _salario,
+                                    _edad,
+                                    _opcionSeleccionada,
+                                    _barrioResidencia,
+                                    _direccionCasa,
+                                    _telefonoCasa,
+                                    _direccionTrabajo,
+                                    _email,
+                                    _descripcionConsulta,
+                                    _estado);
 
-                        estadoForm.stateForm = 'si';
-                      },
-                    ),
-                  ],
+                            estadoForm.stateForm = 'si';
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text('Algunos campos necesitan revisión'),
+                            ));
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -126,10 +160,17 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearNombre() {
-    return TextField(
+    return TextFormField(
+      autofocus: true,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Nombre completo',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _nombre = valor;
       }),
@@ -137,10 +178,16 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearIdentificacion() {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Identificacion',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _identificacion = valor;
       }),
@@ -148,10 +195,17 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearSalario() {
-    return TextField(
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu salario';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Salario',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _salario = valor;
       }),
@@ -159,32 +213,66 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearEdad() {
-    return TextField(
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Edad',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _edad = valor;
       }),
     );
   }
 
+  List<DropdownMenuItem<String>> getOpcionesDropDown() {
+    List<DropdownMenuItem<String>> lista = [];
+
+    _estadoCivil.forEach((estado) {
+      lista.add(DropdownMenuItem(
+        child: Text(estado),
+        value: estado,
+      ));
+    });
+
+    return lista;
+  }
+
   _crearEstadoCivil() {
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Estado Civil',
-      ),
-      onChanged: (valor) => setState(() {
-        _estadoCivil = valor;
-      }),
+    return Row(
+      children: [
+        DropdownButton(
+          borderRadius: BorderRadius.circular(15.0),
+          style: TextStyle(
+              fontSize: 18.0, color: Color.fromARGB(255, 114, 114, 114)),
+          value: _opcionSeleccionada,
+          items: getOpcionesDropDown(),
+          onChanged: (opt) {
+            setState(() {
+              _opcionSeleccionada = opt.toString();
+            });
+          },
+        ),
+      ],
     );
   }
 
   _crearBarrio() {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Barrio de residencia',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _barrioResidencia = valor;
       }),
@@ -192,10 +280,16 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearDireccionCasa() {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Direccion casa',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _direccionCasa = valor;
       }),
@@ -203,10 +297,17 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearTelefono() {
-    return TextField(
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Telefono casa',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _telefonoCasa = valor;
       }),
@@ -214,10 +315,16 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearDireccionTrabajo() {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Direccion trabajo',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _direccionTrabajo = valor;
       }),
@@ -225,10 +332,17 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearEmail() {
-    return TextField(
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       decoration: InputDecoration(
         hintText: 'Correo electronico',
       ),
+      textInputAction: TextInputAction.next,
       onChanged: (valor) => setState(() {
         _email = valor;
       }),
@@ -236,11 +350,17 @@ class _FormPageState extends State<FormPage> {
   }
 
   _crearDescripcion() {
-    return TextField(
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Debes introducir tu nombre';
+        }
+      },
       maxLines: 8,
       decoration: InputDecoration(
         hintText: 'Descripcion de la consulta',
       ),
+      textInputAction: TextInputAction.done,
       onChanged: (valor) => setState(() {
         _descripcionConsulta = valor;
       }),
