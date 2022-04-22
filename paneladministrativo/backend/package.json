@@ -1,0 +1,18 @@
+{
+  "name": "consultorio-api",
+  "version": "1.0.0",
+  "description": "api que obtiene todos los datos de la base de datos",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "firebase": "^9.6.10",
+    "firebase-admin": "^10.0.2"
+  }
+}

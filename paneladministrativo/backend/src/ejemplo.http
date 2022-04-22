@@ -1,0 +1,5 @@
+GET http://localhost:8090/api/solicitudes/
+
+
+
+PUT http://localhost:8090/api/solicitudes/uid/kBfy39UcOzRpKDdxs0ZmkvRtgk72/estado/enviado
