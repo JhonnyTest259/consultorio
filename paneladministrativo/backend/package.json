@@ -1,7 +1,7 @@
 {
   "name": "consultorio-api",
   "version": "1.0.0",
-  "description": "api que obtiene todos los datos de la base de datos",
+  "description": "api que recupera de base de datos",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -12,7 +12,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "firebase": "^9.6.10",
-    "firebase-admin": "^10.0.2"
+    "firebase": "^9.6.11",
+    "firebase-admin": "^10.1.0"
   }
 }
