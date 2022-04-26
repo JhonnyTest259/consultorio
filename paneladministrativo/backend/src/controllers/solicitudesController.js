@@ -5,10 +5,10 @@ const getData = async (req, res) => {
     try {
         solRef.get().then((snapshot) => {
             const data = snapshot.docs.map((doc) => ({
-              /*   uid: doc.get('uid'),
-                estado: doc.get('estado'),
-                nombre: doc.get('nombre'), */
-               ...doc.data(),
+                /*   uid: doc.get('uid'),
+                  estado: doc.get('estado'),
+                  nombre: doc.get('nombre'), */
+                ...doc.data(),
             }));
             //console.log(data);
             return res.status(201).json(data);
@@ -24,16 +24,41 @@ const getOne = async (req, res) => {
     const cod = req.params.codigo;
     const solRef = db.collection('solicitudes').doc(cod);
     try {
-        const doc = await solRef.get();
-        
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          //console.log('Document data:', doc.data());
-          return res.status(201).json(doc.data());
-        }
-            
-        return res.status(201).json(data);
+
+        solRef.get().then((snapshot) => {
+            const data = snapshot.data();
+
+            const sol = {
+                'uid': data.uid,
+                'nombre': data.nombre,
+                'salario': data.salario,
+                'edad': data.edad,
+                'identificacion': data.identificacion,
+                'email': data.email,
+                'barrio': data.barrio,
+                'telefono': data.telefono,
+                'estadoCivil': data.estadoCivil,
+                'direccionCasa': data.direccionCasa,
+                'direccionTrabajo': data.direccionTrabajo,
+                'descripcionConsulta': data.descripcion,
+            }
+
+            if (!data == null) {
+                console.log('No such document!');
+            } else {
+                return res.status(201).json(sol);
+            }
+
+        });
+
+        /*   const doc = await solRef.get();
+          
+          if (!doc.exists) {
+            console.log('No such document!');
+          } else {
+            return res.status(201).json(doc.data());
+          } */
+
     } catch (error) {
         return res
             .status(500)

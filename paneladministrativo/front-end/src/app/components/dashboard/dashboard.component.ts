@@ -19,17 +19,16 @@ export class DashboardComponent implements OnInit {
     { id: 1, name: "Aceptado" },
     { id: 2, name: "Revision" },
     { id: 3, name: "Rechazado" },
-  ]
+  ];
   selectedValue = null;
 
   estado = "";
   uid = "";
   displayStyle = "none";
-  constructor(public authService: AuthService, private solicitudService: SolicitudService) { 
-    
+  constructor(public authService: AuthService, private solicitudService: SolicitudService) {
   }
 
- 
+
 
   ngOnInit(): void {
     this.getSolicitudes();
@@ -37,18 +36,19 @@ export class DashboardComponent implements OnInit {
   getSolicitudes() {
     this.solicitudService.getSolicitudes().subscribe((solicitud) => {
       this.solicitud = solicitud;
-     //console.log(solicitud);
+      //console.log(solicitud);
     })
   }
 
   generarPdf(uid: string) {
+    this.uid = uid;
     let soli = new Solicitudes();
-    this.solicitudService.getSolicitud(uid).subscribe((solicitud) => {
-      this.solicitudOne = solicitud;
+    this.solicitudService.getSolicitud(this.uid).subscribe( (solicitud) => {
+        this.solicitudOne =  solicitud;
+   
+        console.log(this.solicitudOne);
     });
-    
     //this.downloadPDF();
-    console.log(this.solicitudOne);
   }
   public downloadPDF(): void {
     const doc = new jsPDF();
@@ -61,16 +61,16 @@ export class DashboardComponent implements OnInit {
     this.uid = uid;
     this.displayStyle = "block";
   }
-  closePopupEstado(uid: string, estado:string) {
+  closePopupEstado(uid: string, estado: string) {
     //console.log(uid +"  "+ estado);
-    this.solicitudService.putState(new Solicitudes,uid,estado).subscribe(()=> 
-    this.getSolicitudes());
+    this.solicitudService.putState(new Solicitudes, uid, estado).subscribe(() =>
+      this.getSolicitudes());
     this.displayStyle = "none";
   }
-  cancelarPopUpEstado(){
+  cancelarPopUpEstado() {
     this.displayStyle = "none";
   }
-  asignarEstado(e: any){
+  asignarEstado(e: any) {
     this.estado = e.target.value;
   }
 
