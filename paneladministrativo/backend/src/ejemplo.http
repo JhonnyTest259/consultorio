@@ -1,5 +1,5 @@
-GET http://localhost:8090/api/solicitudes/
+GET http://localhost:8090/api/solicitudes/AxQWuhLCLvOtJED1UfAJWbe8pWE3
 
 
 
-PUT http://localhost:8090/api/solicitudes/uid/rcamTzm4a4gQzWSCrZiFHT6jIhp1/estado/aceptado
+PUT http://localhost:8090/api/solicitudes/uid/AxQWuhLCLvOtJED1UfAJWbe8pWE3/estado/aceptado

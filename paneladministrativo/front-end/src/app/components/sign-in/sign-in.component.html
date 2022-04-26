@@ -1,34 +1,73 @@
-<div class="displayTable">
-    <div class="displayTableCell">
-      <div class="authBlock">
-        <h3>Sign In</h3>
-        <div class="formGroup">
-          <input type="text" class="formControl" placeholder="Username" #userName required>
-        </div>
-        <div class="formGroup">
-          <input type="password" class="formControl" placeholder="Password" #userPassword required>
-        </div>
-        <!-- Calling SignIn Api from AuthService -->
-        <div class="formGroup">
-          <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)">
-        </div>
-        <div class="formGroup">
-          <span class="or"><span class="orInner">Or</span></span>
-        </div>
-        <!-- Calling GoogleAuth Api from AuthService -->
-        <div class="formGroup">
-          <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
-            <i class="fab fa-google-plus-g"></i>
-            Log in with Google
-          </button>
-        </div>
-        <div class="forgotPassword">
-          <span routerLink="/forgot-password">Forgot Password?</span>
-        </div>
+<nav class="navbar navbar-expand-lg" style="background-color: #515463; padding: 15px;">
+  <div style="display: flex; width: 100%;">
+
+    <div class="row" style="display: flex; min-width: 85%;">
+      <div class="col col-3">
+        <input type="text" class="form-control" placeholder="Correo" #userName required>
       </div>
-      <div class="redirectToLogin">
-        <span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
+
+      <div class="col col-3">
+        <input type="password" class="form-control" placeholder="Contraseña" #userPassword required>
+      </div>
+
+      <div class="col col-4">
+        <div class="row" style="display: flex; align-items: center;">
+          <div class="col col-4">
+            <input type="button" class="btn" style="background-color: #72828E; color: #fff" value="Entrar"
+              (click)="authService.SignIn(userName.value, userPassword.value)">
+          </div>
+          <div class="col col-8">
+            <div class="forgotPassword" style="margin-left: -15px;">
+              <a routerLink="/forgot-password" style="color:#fff">olvidaste tu contraseña?</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="container" style="text-align: end;">
+      <a href="#" class="navbar-brand">
+        <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt="" width="30"
+          height="30">
+      </a>
+    </div>
   </div>
-  
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1>IMAGEN</h1>
+    </div>
+    <div class="col">
+      <h1>TEXTOS</h1>
+    </div>
+  </div>
+</div>
+
+<div class="redirectToLogin">
+  <span>No tienes una cuenta?<span class="redirect" routerLink="/register-user"> Inscribete</span></span>
+</div>
+
+<!-- <div class="display table">
+  <div class="display table-cell">
+    <div class="authBlock">
+      <h3>Iniciar Sesion</h3>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Correo" #userName required>
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" placeholder="Contraseña" #userPassword required>
+      </div>
+      LLamado a la Api de inicio de sesion firebase 
+      <div class="form-group">
+        <input type="button" class="btn btnPrimary" value="Iniciar sesion"
+          (click)="authService.SignIn(userName.value, userPassword.value)">
+      </div>
+
+
+    </div>
+    <div class="redirectToLogin">
+      <span>No tienes una cuenta?<span class="redirect" routerLink="/register-user"> Inscribete</span></span>
+    </div>
+  </div>
+</div>-->

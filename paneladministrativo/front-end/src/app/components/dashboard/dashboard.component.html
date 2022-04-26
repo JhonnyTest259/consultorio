@@ -1,1 +1,136 @@
-<p>dashboard works!</p>
+<!-- Top navigation -->
+<nav class="navbar navbar-expand-lg" style="background-color: #515463; padding: 15px;">
+  <div style="display: flex; justify-content: space-between; width: 100%;">
+    <h2 class="text-white">Bandeja de entrada</h2>
+    <a href="#" class="navbar-brand">
+      <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt="" width="30" height="30">
+    </a>
+  </div>
+</nav>
+<!-- Sidebar navigation -->
+<div class="container-fluid">
+  <div class="row">
+    <aside class="col-3 pt-3 text-center d-flex"
+      style="background-color: #72828E; height: 100vh; justify-content: center;">
+      <ul class="column p-0" style="list-style-type: none; color: #fff; font-size: 25px;">
+        <li class="list-group">
+          <h1 class="h1">Bienvenido</h1>
+        </li>
+        <li style="margin: 25% 0">
+          <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt="" width="100%">
+        </li>
+        <!-- Llamado SignOut() Api de AuthService -->
+        <li class="list-group">
+          <a (click)="authService.SignOut()" style="cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i>Cerrar sesión
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <!-- Main content -->
+    <main role="main" class="col-9" style="color: #707070;">
+      <div class="inner-adjust">
+        <div class="pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Solicitudes</h1>
+        </div>
+        <!-- Show user data when logged in -->
+        <div class="row" *ngIf="authService.userData as user">
+          <div class="col-md-12">
+            <div class="media">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Codigo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descargar</th>
+                    <th scope="col">Estado</th>
+                    <th> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let soli of solicitud">
+                    <th scope="row">{{soli.uid}}</th>
+                    <td>{{soli.nombre}}</td>
+                    <td>
+                      <button style="background-color: #72828E;" class="btn btn-info text-white"
+                        (click)="generarPdf(soli.uid)">Descargar</button>
+                    </td>
+                    <td>
+                      {{soli.estado}}
+                    </td>
+                    <td>
+
+                      <button style="background-color: #72828E;" type="button" class="btn text-white"
+                        (click)="openPopupEstado(soli.uid)">Cambiar
+                      </button>
+                      <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
+                        role="dialog" [ngStyle]="{'display':displayStyle}">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Cambiar estado</h4>
+                            </div>
+                            <div class="modal-body">
+                              <p><strong>Solicitud:</strong> {{uid}}</p>
+                              <select class="form-select" name="estados" id="estados" (change)="asignarEstado($event)">
+                                <option selected>--SELECCIONE--</option>
+                                <option *ngFor="let s of listaEstados" value="s.id" [value]="s.name">
+                                  {{s.name}}
+                                </option>
+                              </select>
+                            </div>
+                            <div class="modal-footer">
+                              <div class="row">
+                                <div class="col">
+                                  <button type="button" class="btn text-white" style="background-color: #72828E;"
+                                    (click)="closePopupEstado(uid , estado)">
+                                    Guardar
+                                  </button>
+                                </div>
+                                <div class="col">
+                                  <button type="button" class="btn text-white" style="background-color: #72828E;"
+                                    (click)="cancelarPopUpEstado()">
+                                    Cancelar
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- 
+<main role="main" class="col-9"  style="color: #707070;">
+  <div class="inner-adjust">
+    <div class="pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Solicitudes</h1>
+    </div>
+    Show user data when logged in 
+    <div class="row" *ngIf="authService.userData as user">
+      <div class="col-md-12">
+        <div class="media">
+          <img class="align-self-start mr-5 img-thumbnail rounded-circle"
+            src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}" alt="{{user.displayName}}">
+          <div class="media-body">
+            <h1>Hola: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+            <p>User ID: <strong>{{user.uid}}</strong></p>
+            <p>Email: <strong>{{user.email}}</strong></p>
+            <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main> -->
