@@ -1,0 +1,10 @@
+.my-pagination /deep/ .ngx-pagination .current {
+    background: rgba(0, 0, 0, 0.039);
+    color: #515463; 
+    border-radius: 15px;
+}
+
+.my-pagination /deep/ .ngx-pagination{
+    text-align: center;
+}
+

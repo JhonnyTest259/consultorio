@@ -34,12 +34,15 @@
           <h1 class="h2">Solicitudes</h1>
         </div>
         <!-- Show user data when logged in -->
+        
+        <mat-spinner [ngStyle]="{'opacity':showSpinner}" style="border-radius: 10px; background-color: rgba(0, 0, 0, 0.242); position: absolute; 
+        width: 73.5vw; height: 44vh; transition: opacity 0.35s; z-index: -1;"></mat-spinner> 
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
-            <div class="media">
+            <div class="media" style="overflow: auto">
               <table class="table">
                 <thead>
-                  <tr>
+                  <tr >
                     <th scope="col">Codigo</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descargar</th>
@@ -48,12 +51,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let soli of solicitud">
+                  <tr *ngFor="let soli of solicitud | paginate: { itemsPerPage: 5, currentPage: page}">
                     <th scope="row">{{soli.uid}}</th>
                     <td>{{soli.nombre}}</td>
                     <td>
-                      <button style="background-color: #72828E;" class="btn btn-info text-white"
-                        (click)="generarPdf(soli.uid)">Descargar</button>
+                      <button style="background-color: #72828E;" class="btn text-white"
+                        (click)="generarPdf(soli.uid)">Ver más</button>
                     </td>
                     <td>
                       {{soli.estado}}
@@ -64,7 +67,7 @@
                       </button>
                       <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
                         role="dialog" [ngStyle]="{'display':displayStyle}">
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog" role="document" style="margin: 16.75rem auto;">
                           <div class="modal-content">
                             <div class="modal-header">
                               <h4 class="modal-title">Cambiar estado</h4>
@@ -99,10 +102,63 @@
                       </div>
                     </td>
                   </tr>
-
                 </tbody>
               </table>
+              <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
+                role="dialog" [ngStyle]="{'display':pdfStyle}">
+                <div class="modal-dialog" role="document" style="min-width: 600px; margin: 16.75rem auto;">
+                  <div class="modal-content">
+                    <div class="modal-body" style="width: 100%;">
+                      <div id="htmlData" class="row" style="display: inline-flex; line-height: 34px;">
+                        <div class="col-12">
+                          <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt=""
+                            width="30" height="30">
+                          <h3 class="text-center">Informacion de usuario</h3>
+                          <hr>
+                        </div>
+                        <div class="col-6">
+                          <span><strong>ID:</strong>{{pdfSoli._uid}}</span><br>
+                          <span><strong>NOMBRE:</strong>{{pdfSoli.nombre}}</span><br>
+                          <span><strong>SALARIO:</strong>{{pdfSoli.salario}}</span><br>
+                          <span><strong>EDAD:</strong>{{pdfSoli.edad}}</span><br>
+                          <span><strong>BARRIO:</strong>{{pdfSoli.barrioResidencia}}</span><br>
+                        </div>
+                        <div class="col-6">
+                          <span><strong>DIRECCION: </strong>{{pdfSoli.direccionCasa}}</span><br>
+                          <span><strong>TELEFONO: </strong>{{pdfSoli.telefonoCasa}}</span><br>
+                          <span><strong>DIRECCION DE TRABAJO: </strong>{{pdfSoli.direccionTrabajo}}</span><br>
+                          <span><strong>EMAIL: </strong>{{pdfSoli.email}}</span><br>
+                          <span><strong>DESCRIPCION: </strong>{{pdfSoli.descripcionConsulta}}</span><br>
+                        </div>
+                      </div>
+                      <div class="col-12" style="justify-content: center;">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="row">
+                        <div class="col">
+                          <button style="background-color: #72828E;" class="btn text-white text-center"
+                            (click)="downloadPDF()">Descargar</button>
+                        </div>
+                        <div class="col">
+                          <button type="button" class="btn text-white" style="background-color: #72828E;"
+                            (click)="cancelarPopUpEstado()">
+                            Cancelar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
             </div>
+            <pagination-controls class="my-pagination" 
+              (pageChange)="page = $event" 
+              previousLabel="Anterior"
+               nextLabel="Siguiente"
+               [responsive]="true">
+              </pagination-controls>
           </div>
         </div>
       </div>

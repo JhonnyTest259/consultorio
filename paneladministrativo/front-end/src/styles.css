@@ -6,4 +6,12 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     overflow: hidden;
+    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+
+
+.mat-progress-spinner svg {
+    top: 29% !important;
+    left: 46% !important;
 }

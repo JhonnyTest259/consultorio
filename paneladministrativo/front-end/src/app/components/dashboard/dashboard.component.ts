@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { Solicitudes } from 'src/app/models/solicitudes';
-import { SolicitudService } from 'src/app/services/solicitud.service';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -14,65 +14,99 @@ import html2canvas from 'html2canvas';
 export class DashboardComponent implements OnInit {
   solicitud: any;
   solicitudOne: any;
+  selectedValue = null;
+  estado = "";
+  uid = "";
+  displayStyle = "none";
+  pdfStyle = "none";
+  pdfSoli = new Solicitudes();
+  public page?: number;
+  showSpinner = "0";
+  cantiSoli = 0;
   listaEstados = [
     { id: 0, name: "Enviado" },
     { id: 1, name: "Aceptado" },
     { id: 2, name: "Revision" },
     { id: 3, name: "Rechazado" },
   ];
-  selectedValue = null;
 
-  estado = "";
-  uid = "";
-  displayStyle = "none";
-  constructor(public authService: AuthService, private solicitudService: SolicitudService) {
+  constructor(public authService: AuthService, public db: AngularFirestore) {
   }
-
-
-
   ngOnInit(): void {
     this.getSolicitudes();
   }
   getSolicitudes() {
-    this.solicitudService.getSolicitudes().subscribe((solicitud) => {
-      this.solicitud = solicitud;
-      //console.log(solicitud);
-    })
+    const ref = this.db.collection('solicitudes', ref => ref.orderBy('creado', 'desc'));
+    ref.valueChanges().subscribe((soliData) => {
+      this.solicitud = soliData;
+      this.showSpinner = "1";
+    setTimeout(() => {
+      this.showSpinner = "0";
+    }, 300);
+    });
+    this.showSpinner = "1";
+    setTimeout(() => {
+      this.showSpinner = "0"; 
+    }, 800);
   }
 
   generarPdf(uid: string) {
     this.uid = uid;
-    let soli = new Solicitudes();
-    this.solicitudService.getSolicitud(this.uid).subscribe( (solicitud) => {
-        this.solicitudOne =  solicitud;
-   
-        console.log(this.solicitudOne);
+    const ref = this.db.collection('solicitudes').doc(uid);
+    ref.get().subscribe((soliData) => {
+      this.solicitudOne = soliData.data();
+      this.pdfSoli = new Solicitudes(this.solicitudOne.uid,
+        this.solicitudOne.nombre, this.solicitudOne.salario,
+        this.solicitudOne.edad, this.solicitudOne.barrio,
+        this.solicitudOne.direccionCasa, this.solicitudOne.telefono,
+        this.solicitudOne.direccionTrabajo, this.solicitudOne.email,
+        this.solicitudOne.descripcion);
+      this.pdfStyle = "inline-flex";
     });
-    //this.downloadPDF();
   }
+
   public downloadPDF(): void {
-    const doc = new jsPDF();
+    const DATA = document.getElementById('htmlData');
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 3
+    };
 
-    doc.text('Hello world!', 10, 10);
-    doc.save('hello-world.pdf');
+    html2canvas(DATA!, options).then((canvas) => {
+      const img = canvas.toDataURL('image/PNG');
+
+      //Add image Canvas to PDF
+      const bufferX = 15;
+      const bufferY = 15;
+      const imgProps = (doc as any).getImageProperties(img);
+      const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      doc.addImage(img, 'PNG', bufferX, bufferY, pdfWidth, pdfHeight, undefined, 'FAST');
+      return doc;
+    }).then((docResult) => {
+      docResult.save(`${this.pdfSoli._uid}_${new Date().toISOString()}_tutorial.pdf`);
+    });
+    this.pdfStyle = "none";
+    /*  doc.text(`${soli.nombre}`, 10, 10);
+     doc.save(`${soli._uid}.pdf`);  */
   }
-
   openPopupEstado(uid: string) {
     this.uid = uid;
     this.displayStyle = "block";
   }
-  closePopupEstado(uid: string, estado: string) {
-    //console.log(uid +"  "+ estado);
-    this.solicitudService.putState(new Solicitudes, uid, estado).subscribe(() =>
-      this.getSolicitudes());
+  async closePopupEstado(uid: string, estado: string) {
+    const solRef = this.db.collection('solicitudes').doc(uid);
+    const data = await solRef.update({
+      estado: estado,
+    });
     this.displayStyle = "none";
   }
   cancelarPopUpEstado() {
     this.displayStyle = "none";
+    this.pdfStyle = "none";
   }
   asignarEstado(e: any) {
     this.estado = e.target.value;
   }
-
-
 }

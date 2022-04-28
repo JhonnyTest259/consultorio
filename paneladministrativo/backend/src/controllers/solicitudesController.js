@@ -1,7 +1,7 @@
 const { db } = require("../config/admin");
 
 const getData = async (req, res) => {
-    const solRef = db.collection('solicitudes');
+    const solRef = db.collection('solicitudes').orderBy("creado", "desc");
     try {
         solRef.get().then((snapshot) => {
             const data = snapshot.docs.map((doc) => ({
