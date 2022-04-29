@@ -30,6 +30,9 @@
           </li>
         <!-- Llamado SignOut() Api de AuthService -->
         <li class="list-group">
+          <div class="redirectToLogin">
+            <span class="redirect" routerLink="/register-user" style="cursor: pointer;"> Añadir Usuario</span>
+          </div>
           <a (click)="authService.SignOut()" style="cursor: pointer;">
             <i class="fas fa-sign-out-alt"></i>Cerrar sesión
           </a>
