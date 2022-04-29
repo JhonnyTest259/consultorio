@@ -44,14 +44,88 @@ class _HomePageState extends State<HomePage> {
                     color: Color(0xFFFFFFFF),
                   ),
                 ),
-                onPressed: () async {
-                  dynamic result = await _auth.SignInAnon();
-                  if (result == null) {
-                    print('Error signing in');
-                  } else {
-                    print('signed in');
-                    print(result.uid);
-                  }
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      contentPadding: EdgeInsets.only(left: 25, right: 25),
+                      title: Center(child: Text("Términos y condiciones")),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                      content: Container(
+                        height: 500,
+                        width: 300,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text('Tratamiento de datos:'),
+                              Text(
+                                'Decreto 1377 de 2013:',
+                              ),
+                              Text(
+                                '* Articulo ${1}' * 40,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) =>
+                                    states.contains(MaterialState.pressed)
+                                        ? Color(0xFF72828E)
+                                        : Color(0xFF72828E)),
+                          ),
+                          child: Text(
+                            'Acepto',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          onPressed: () async {
+                            dynamic result = await _auth.SignInAnon();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('Bienvenido, ingrese su consulta'),
+                            ));
+                            if (result == null) {
+                              print('Error signing in');
+                            } else {
+                              print('signed in');
+                              print(result.uid);
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) =>
+                                    states.contains(MaterialState.pressed)
+                                        ? Color(0xFF72828E)
+                                        : Color(0xFF72828E)),
+                          ),
+                          child: Text(
+                            'No Acepto',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        )
+                      ],
+                    ),
+                  );
+
+                  /*      */
                   //Navigate.goToform(context);
                 },
               ),
@@ -68,9 +142,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Bienvenido, ingrese su consulta'),
-                  ));
                   Navigate.goToHelp(context);
                 },
               ),

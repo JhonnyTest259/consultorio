@@ -181,7 +181,7 @@ class _FormPageState extends State<FormPage> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu identificación';
         }
       },
       decoration: InputDecoration(
@@ -217,7 +217,7 @@ class _FormPageState extends State<FormPage> {
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu edad';
         }
       },
       decoration: InputDecoration(
@@ -266,7 +266,7 @@ class _FormPageState extends State<FormPage> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu barrio';
         }
       },
       decoration: InputDecoration(
@@ -283,7 +283,7 @@ class _FormPageState extends State<FormPage> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu direccion';
         }
       },
       decoration: InputDecoration(
@@ -301,7 +301,7 @@ class _FormPageState extends State<FormPage> {
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu telefono';
         }
       },
       decoration: InputDecoration(
@@ -318,7 +318,7 @@ class _FormPageState extends State<FormPage> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu direccion del trabajo';
         }
       },
       decoration: InputDecoration(
@@ -336,7 +336,7 @@ class _FormPageState extends State<FormPage> {
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes introducir tu correo';
         }
       },
       decoration: InputDecoration(
@@ -353,7 +353,7 @@ class _FormPageState extends State<FormPage> {
     return TextFormField(
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Debes introducir tu nombre';
+          return 'Debes ingresar tu consulta';
         }
       },
       maxLines: 8,
