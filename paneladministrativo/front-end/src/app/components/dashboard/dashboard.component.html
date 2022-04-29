@@ -17,8 +17,17 @@
           <h1 class="h1">Bienvenido</h1>
         </li>
         <li style="margin: 25% 0">
-          <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt="" width="100%">
-        </li>
+          <h2 class="text-start">Filtros:</h2>
+          <h5 class="text-start">solicitudes por pagina: {{cantiSoli}}</h5>
+          <mat-slider style="width: 100%; color:#fff"
+            thumbLabel
+            tickInterval="10"
+            step="1"
+            min="3"
+            max="10"
+            [(ngModel)] ="cantiSoli"
+            aria-label="units"></mat-slider>
+          </li>
         <!-- Llamado SignOut() Api de AuthService -->
         <li class="list-group">
           <a (click)="authService.SignOut()" style="cursor: pointer;">
@@ -51,7 +60,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let soli of solicitud | paginate: { itemsPerPage: 5, currentPage: page}">
+                  <tr *ngFor="let soli of solicitud | paginate: { itemsPerPage: cantiSoli, currentPage: page}">
                     <th scope="row">{{soli.uid}}</th>
                     <td>{{soli.nombre}}</td>
                     <td>

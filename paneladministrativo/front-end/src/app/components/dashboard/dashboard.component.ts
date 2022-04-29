@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   pdfSoli = new Solicitudes();
   public page?: number;
   showSpinner = "0";
-  cantiSoli = 0;
+  cantiSoli = 5;
   listaEstados = [
     { id: 0, name: "Enviado" },
     { id: 1, name: "Aceptado" },
@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(public authService: AuthService, public db: AngularFirestore) {
   }
+
   ngOnInit(): void {
     this.getSolicitudes();
   }

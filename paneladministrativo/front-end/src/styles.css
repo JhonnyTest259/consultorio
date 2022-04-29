@@ -15,3 +15,6 @@ body {
     top: 29% !important;
     left: 46% !important;
 }
+.mat-slider.mat-accent .mat-slider-track-fill, .mat-slider.mat-accent .mat-slider-thumb, .mat-slider.mat-accent .mat-slider-thumb-label {
+    background-color: #ffffff;
+}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,8 +20,12 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { AuthService } from './shared/services/auth.service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSliderModule} from '@angular/material/slider';
 
+const MaterialComponents = [
+  MatProgressSpinnerModule,
+  MatSliderModule
+]
 
 @NgModule({
   declarations: [
@@ -39,9 +44,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    FormsModule,
     NgxPaginationModule,
-    MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    MaterialComponents
     
   ],
   providers: [AuthService],
