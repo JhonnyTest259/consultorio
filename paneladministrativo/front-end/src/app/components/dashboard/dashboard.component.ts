@@ -16,6 +16,9 @@ export class DashboardComponent implements OnInit {
   solicitudOne: any;
   selectedValue = null;
   estado = "";
+  filtroEstado = "";
+  boolEstado = false;
+  signup = false;
   uid = "";
   displayStyle = "none";
   pdfStyle = "none";
@@ -36,18 +39,39 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getSolicitudes();
   }
+
+  getSolicitudesFiltradas(e: any) {
+    this.filtroEstado = e.target.value;
+    const reqfil = this.db.collection('solicitudes', ref => ref.where('estado', '==', this.filtroEstado));
+    if (this.filtroEstado != "") {
+      reqfil.valueChanges().subscribe((soliData) => {
+        this.solicitud = soliData;
+        if (this.solicitud == "") {
+          this.boolEstado = true;
+        } else {
+          this.boolEstado = false;
+        }
+        this.showSpinner = "1";
+        setTimeout(() => {
+          this.showSpinner = "0";
+        }, 300);
+      });
+    } else {
+      this.getSolicitudes();
+    }
+  }
   getSolicitudes() {
     const ref = this.db.collection('solicitudes', ref => ref.orderBy('creado', 'desc'));
     ref.valueChanges().subscribe((soliData) => {
       this.solicitud = soliData;
       this.showSpinner = "1";
-    setTimeout(() => {
-      this.showSpinner = "0";
-    }, 300);
+      setTimeout(() => {
+        this.showSpinner = "0";
+      }, 300);
     });
     this.showSpinner = "1";
     setTimeout(() => {
-      this.showSpinner = "0"; 
+      this.showSpinner = "0";
     }, 800);
   }
 
@@ -109,5 +133,18 @@ export class DashboardComponent implements OnInit {
   }
   asignarEstado(e: any) {
     this.estado = e.target.value;
+  }
+
+  restablecer(){
+    this.filtroEstado = "";
+    this.boolEstado = false;
+    this.getSolicitudes();
+    this.cantiSoli = 5;
+  }
+  anadir(){
+    this.signup = true;
+  }
+  anadirC(){
+    this.signup = false;
   }
 }

@@ -1,43 +1,45 @@
-<div class="display table">
-    <div class="display table-cell">
-      <div class="authBlock">
-        <h3>Sign Up</h3>
-        <div class="form-group">
-          <input
-            type="email"
-            class="form-control"
-            placeholder="Email Address"
-            #userEmail
-            required
-          />
+<div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1" role="dialog"
+  [ngStyle]="{'display': visible}">
+  <div class="modal-dialog" role="document" style="min-width: 600px; margin: 16.75rem auto;">
+    <div class="modal-content">
+      <div class="modal-body" style="width: 100%;">
+        <div id="htmlData" class="row" style="display: inline-flex; line-height: 34px;">
+          <div class="col-12">
+            <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt="" width="30"
+              height="30">
+            <h3 class="text-center">Añadir usuario</h3>
+            <hr>
+          </div>
         </div>
-        <div class="form-group">
-          <input
-            type="password"
-            class="form-control"
-            placeholder="Password"
-            #userPwd
-            required
-          />
+        <div class="col">
+          <div class="display table">
+            <div class="display table-cell">
+              <div class="authBlock">
+                <div class="form-group">
+                  <input type="email" class="form-control" placeholder="Correo electronico" #userEmail required />
+                </div>
+                <div class="form-group">
+                  <input type="password" class="form-control" placeholder="Contraseña" #userPwd required />
+                </div>
+                <div *ngIf="veri">
+                  <p class="text-center">Hemos enviado un correo de confirmación a<strong>{{userEmail.value}}</strong>.</p>
+                  <p class="text-center">Porfavor verifica tu correo y dale clic al enlace para verificar tu correo</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <input
-            type="button"
-            class="btn btn-primary"
-            value="Sign Up"
-            (click)="authService.SignUp(userEmail.value, userPwd.value)"
-          />
-        </div>
-        <div class="form-group">
-          <span class="or"><span class="or inner">Or</span></span>
-        </div>
-
       </div>
-      <div class="redirectToLogin">
-        <span
-          >Already have an account?
-          <span class="redirect" routerLink="/sign-in">Log In</span></span
-        >
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col">
+            <input type="button" style="background-color: #72828E;" class="btn text-white" value="Añadir"
+              (click)="authService.SignUp(userEmail.value, userPwd.value)" (change)="show()"/>
+          </div>
+          <div class="col"><span class="btn text-white" style="background-color: #72828E;"
+              (click)="dash.anadirC()">Volver</span></div>
+        </div>
       </div>
     </div>
   </div>
+</div>

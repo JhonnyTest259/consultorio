@@ -18,24 +18,34 @@
         </li>
         <li style="margin: 25% 0">
           <h2 class="text-start">Filtros:</h2>
-          <h5 class="text-start">solicitudes por pagina: {{cantiSoli}}</h5>
-          <mat-slider style="width: 100%; color:#fff"
-            thumbLabel
-            tickInterval="10"
-            step="1"
-            min="3"
-            max="10"
-            [(ngModel)] ="cantiSoli"
-            aria-label="units"></mat-slider>
-          </li>
+          <h5 class="text-start">Solicitudes por pagina: {{cantiSoli}}</h5>
+
+          <mat-slider style="width: 100%; color:#fff" thumbLabel tickInterval="10" step="1" min="3" max="10"
+            [(ngModel)]="cantiSoli" aria-label="units"></mat-slider>
+          <h5 class="text-start">Por estado: {{filtroEstado}}</h5>
+          <select class="form-select" name="festados" id="festados" (change)="getSolicitudesFiltradas($event)">
+            <option selected>--SELECCIONE--</option>
+            <option *ngFor="let s of listaEstados" value="s.id" [value]="s.name">
+              {{s.name}}
+            </option>
+          </select>
+          <button type="button" class="btn" style="background-color: #ffffff; color: #72828E; margin-top: 25px;"
+            (click)="restablecer()">
+            Borrar filtros
+          </button>
+        </li>
         <!-- Llamado SignOut() Api de AuthService -->
         <li class="list-group">
           <div class="redirectToLogin">
-            <span class="redirect" routerLink="/register-user" style="cursor: pointer;"> Añadir Usuario</span>
+            <button class="btn" style="background-color: #ffffff; color: #72828E;" (click)="anadir()">Añadir
+              Usuario </button>
+            <div *ngIf="signup">
+              <app-sign-up></app-sign-up>
+            </div>
           </div>
-          <a (click)="authService.SignOut()" style="cursor: pointer;">
-            <i class="fas fa-sign-out-alt"></i>Cerrar sesión
-          </a>
+          <button class="btn" style="background-color: #ffffff; color: #72828E;
+           margin: 25px 50px 0px 50px;" (click)="authService.SignOut()">Cerrar
+            sesión</button>
         </li>
       </ul>
     </aside>
@@ -46,15 +56,15 @@
           <h1 class="h2">Solicitudes</h1>
         </div>
         <!-- Show user data when logged in -->
-        
+
         <mat-spinner [ngStyle]="{'opacity':showSpinner}" style="border-radius: 10px; background-color: rgba(0, 0, 0, 0.242); position: absolute; 
-        width: 73.5vw; height: 44vh; transition: opacity 0.35s; z-index: -1;"></mat-spinner> 
+        width: 73.5vw; height: 44vh; transition: opacity 0.35s; z-index: -1;"></mat-spinner>
         <div class="row" *ngIf="authService.userData as user">
           <div class="col-md-12">
             <div class="media" style="overflow: auto">
               <table class="table">
                 <thead>
-                  <tr >
+                  <tr>
                     <th scope="col">Codigo</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Descargar</th>
@@ -63,6 +73,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <div class="text-center" *ngIf="boolEstado"><strong>Sin contenido aún</strong></div>
                   <tr *ngFor="let soli of solicitud | paginate: { itemsPerPage: cantiSoli, currentPage: page}">
                     <th scope="row">{{soli.uid}}</th>
                     <td>{{soli.nombre}}</td>
@@ -163,14 +174,11 @@
                   </div>
                 </div>
               </div>
-              
+
             </div>
-            <pagination-controls class="my-pagination" 
-              (pageChange)="page = $event" 
-              previousLabel="Anterior"
-               nextLabel="Siguiente"
-               [responsive]="true">
-              </pagination-controls>
+            <pagination-controls class="my-pagination" (pageChange)="page = $event" previousLabel="Anterior"
+              nextLabel="Siguiente" [responsive]="true">
+            </pagination-controls>
           </div>
         </div>
       </div>

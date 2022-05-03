@@ -17,7 +17,7 @@ export class AuthService {
     public afs: AngularFirestore, // Servicio de firestore
     public afAuth: AngularFireAuth, // servicio de autenticacion fire
     public router: Router,
-    public ngZone: NgZone 
+    public ngZone: NgZone,
   ) {
     /* guarda un usuario localmente y retorna null cuando cierra sesion */
     this.afAuth.authState.subscribe((user) => {
@@ -63,7 +63,7 @@ export class AuthService {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
-        this.router.navigate(['verify-email-address']);
+        //this.router.navigate(['dashboard']);
       });
   }
   // Restablece la contraseña
