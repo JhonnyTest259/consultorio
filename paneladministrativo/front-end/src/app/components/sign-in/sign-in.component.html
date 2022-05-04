@@ -18,7 +18,10 @@
           </div>
           <div class="col col-8">
             <div class="forgotPassword" style="margin-left: -15px;">
-              <a routerLink="/forgot-password" style="color:#fff">olvidaste tu contraseña?</a>
+              <a style="color:#fff; cursor: pointer;" (click)="showFModal()">olvidaste tu contraseña?</a>
+              <div *ngIf="showForgotModal">
+                <app-forgot-password></app-forgot-password>
+              </div>
             </div>
           </div>
         </div>

@@ -8,11 +8,19 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class SignInComponent implements OnInit {
 
+  showForgotModal= false;
   constructor(
     public authService: AuthService
   ) { }
 
   ngOnInit(): void {
+  }
+
+  showFModal(){
+    this.showForgotModal = true;
+  }
+  hiddenFModal(){
+    this.showForgotModal = false;
   }
 
 }

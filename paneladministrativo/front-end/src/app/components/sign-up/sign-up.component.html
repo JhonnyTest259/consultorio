@@ -1,6 +1,6 @@
 <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1" role="dialog"
   [ngStyle]="{'display': visible}">
-  <div class="modal-dialog" role="document" style="min-width: 600px; margin: 16.75rem auto;">
+  <div class="modal-dialog" role="document" style="min-width: 600px; margin: 10% auto;">
     <div class="modal-content">
       <div class="modal-body" style="width: 100%;">
         <div id="htmlData" class="row" style="display: inline-flex; line-height: 34px;">
@@ -22,7 +22,7 @@
                   <input type="password" class="form-control" placeholder="Contraseña" #userPwd required />
                 </div>
                 <div *ngIf="veri">
-                  <p class="text-center">Hemos enviado un correo de confirmación a<strong>{{userEmail.value}}</strong>.</p>
+                  <p class="text-center">Hemos enviado un correo de confirmación a <strong>{{userEmail.value}}</strong>.</p>
                   <p class="text-center">Porfavor verifica tu correo y dale clic al enlace para verificar tu correo</p>
                 </div>
               </div>
@@ -34,7 +34,7 @@
         <div class="row">
           <div class="col">
             <input type="button" style="background-color: #72828E;" class="btn text-white" value="Añadir"
-              (click)="authService.SignUp(userEmail.value, userPwd.value)" (change)="show()"/>
+              (click)="authService.SignUp(userEmail.value, userPwd.value)" (click)="show()"/>
           </div>
           <div class="col"><span class="btn text-white" style="background-color: #72828E;"
               (click)="dash.anadirC()">Volver</span></div>

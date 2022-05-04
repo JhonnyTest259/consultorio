@@ -20,7 +20,7 @@
           <h2 class="text-start">Filtros:</h2>
           <h5 class="text-start">Solicitudes por pagina: {{cantiSoli}}</h5>
 
-          <mat-slider style="width: 100%; color:#fff" thumbLabel tickInterval="10" step="1" min="3" max="10"
+          <mat-slider style="width: 100%; color:#fff" thumbLabel tickInterval="8" step="1" min="3" max="8"
             [(ngModel)]="cantiSoli" aria-label="units"></mat-slider>
           <h5 class="text-start">Por estado: {{filtroEstado}}</h5>
           <select class="form-select" name="festados" id="festados" (change)="getSolicitudesFiltradas($event)">
@@ -90,7 +90,7 @@
                       </button>
                       <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
                         role="dialog" [ngStyle]="{'display':displayStyle}">
-                        <div class="modal-dialog" role="document" style="margin: 16.75rem auto;">
+                        <div class="modal-dialog" role="document" style="margin: 10% auto;">
                           <div class="modal-content">
                             <div class="modal-header">
                               <h4 class="modal-title">Cambiar estado</h4>
@@ -129,7 +129,7 @@
               </table>
               <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
                 role="dialog" [ngStyle]="{'display':pdfStyle}">
-                <div class="modal-dialog" role="document" style="min-width: 600px; margin: 16.75rem auto;">
+                <div class="modal-dialog" role="document" style="min-width: 600px; margin: 10% auto;">
                   <div class="modal-content">
                     <div class="modal-body" style="width: 100%;">
                       <div id="htmlData" class="row" style="display: inline-flex; line-height: 34px;">
