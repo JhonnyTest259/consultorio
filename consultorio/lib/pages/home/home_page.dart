@@ -1,6 +1,7 @@
 import 'package:consultorio/routes/navegate.dart';
 import 'package:consultorio/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -50,6 +51,7 @@ class _HomePageState extends State<HomePage> {
                       dynamic result = await _auth.SignInAnon();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text('Bienvenido, ingrese su consulta'),
+                        backgroundColor: Color(0xFF7A0C29),
                       ));
                       if (result == null) {
                         print('Error signing in');
@@ -58,47 +60,10 @@ class _HomePageState extends State<HomePage> {
                         print(result.uid);
                       }
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          contentPadding: EdgeInsets.only(left: 25, right: 25),
-                          title: Center(child: Text("Info")),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
-                          content: Container(
-                            height: 100,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  Text(
-                                      'Debes aceptar Términos y condiciones para continuar'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          actions: <Widget>[
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: MaterialButton(
-                                elevation: 14.0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                                child: Text(
-                                  'volver',
-                                  style: TextStyle(
-                                    fontSize: 19.0,
-                                    color: Color(0xFF3F3F3F),
-                                  ),
-                                ),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Debes aceptar términos y condiciones.'),
+                        backgroundColor: Color(0xFF7A0C29),
+                      ));
                     }
                   },
                 ),
@@ -203,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: Text(
-                  'ayuda',
+                  'Ayuda',
                   style: TextStyle(
                     fontSize: 19.0,
                     color: Colors.brown,
@@ -221,51 +186,15 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/* onPressed: () async {
-                              dynamic result = await _auth.SignInAnon();
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content:
-                                    Text('Bienvenido, ingrese su consulta'),
-                              ));
-                              if (result == null) {
-                                print('Error signing in');
-                              } else {
-                                print('signed in');
-                                print(result.uid);
-                              }
-                              Navigator.pop(context);
-                            }, */
-
-/*   */
 class _EntryCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          height: 216,
-          width: 216,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 20.0,
-                offset: Offset(0.0, 9.0),
-                spreadRadius: 5.0,
-              ),
-            ],
-          ),
-          child: ClipOval(
-            child: Material(
-              color: Color.fromARGB(255, 112, 6, 0),
-              child: InkWell(
-                splashColor: Colors.white,
-                onTap: () {},
-              ),
-            ),
-          ),
+        SvgPicture.asset(
+          'assets/svg/Icono.svg',
+          height: 250,
+          width: 250,
         ),
       ],
     );

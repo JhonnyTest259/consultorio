@@ -83,7 +83,7 @@ class _TemporalPageState extends State<TemporalPage>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SvgPicture.asset(
-                'assets/svg/logo1.svg',
+                'assets/svg/Icono.svg',
                 height: 250,
                 width: 250,
               ),
