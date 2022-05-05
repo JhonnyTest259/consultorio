@@ -9,6 +9,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
+  bool valueT = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,117 +20,183 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
         child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFFFFF4EA), Color(0xFFBCB8B5)],
-            ),
-          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: 32.0)),
               _EntryCircle(),
-              MaterialButton(
-                color: Color(0xFF72828E),
-                elevation: 14.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                child: Text(
-                  'Ingresar',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    color: Color(0xFFFFFFFF),
+              Padding(padding: EdgeInsets.only(top: 100.0)),
+              Container(
+                width: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
                   ),
                 ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      contentPadding: EdgeInsets.only(left: 25, right: 25),
-                      title: Center(child: Text("Términos y condiciones")),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                      content: Container(
-                        height: 500,
-                        width: 300,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Text('Tratamiento de datos:'),
-                              Text(
-                                'Decreto 1377 de 2013:',
-                              ),
-                              Text(
-                                '* Articulo ${1}' * 40,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith(
-                                (states) =>
-                                    states.contains(MaterialState.pressed)
-                                        ? Color(0xFF72828E)
-                                        : Color(0xFF72828E)),
-                          ),
-                          child: Text(
-                            'Acepto',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.0,
-                            ),
-                          ),
-                          onPressed: () async {
-                            dynamic result = await _auth.SignInAnon();
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('Bienvenido, ingrese su consulta'),
-                            ));
-                            if (result == null) {
-                              print('Error signing in');
-                            } else {
-                              print('signed in');
-                              print(result.uid);
-                            }
-                            Navigator.pop(context);
-                          },
-                        ),
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith(
-                                (states) =>
-                                    states.contains(MaterialState.pressed)
-                                        ? Color(0xFF72828E)
-                                        : Color(0xFF72828E)),
-                          ),
-                          child: Text(
-                            'No Acepto',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15.0,
-                            ),
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        )
-                      ],
+                child: FlatButton(
+                  child: Text(
+                    'Ingresar',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.white,
                     ),
-                  );
-
-                  /*      */
-                  //Navigate.goToform(context);
-                },
+                  ),
+                  onPressed: () async {
+                    if (valueT) {
+                      print(valueT);
+                      dynamic result = await _auth.SignInAnon();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Bienvenido, ingrese su consulta'),
+                      ));
+                      if (result == null) {
+                        print('Error signing in');
+                      } else {
+                        print('signed in');
+                        print(result.uid);
+                      }
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          contentPadding: EdgeInsets.only(left: 25, right: 25),
+                          title: Center(child: Text("Info")),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          content: Container(
+                            height: 100,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  Text(
+                                      'Debes aceptar Términos y condiciones para continuar'),
+                                ],
+                              ),
+                            ),
+                          ),
+                          actions: <Widget>[
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: MaterialButton(
+                                elevation: 14.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: Text(
+                                  'volver',
+                                  style: TextStyle(
+                                    fontSize: 19.0,
+                                    color: Color(0xFF3F3F3F),
+                                  ),
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Checkbox(
+                    activeColor: Color(0xFF7A0C29),
+                    value: this.valueT,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        this.valueT = value!;
+                      });
+                    },
+                  ),
+                  MaterialButton(
+                    elevation: 14.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: const TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Aceptar',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' términos y condiciones',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Color.fromARGB(255, 112, 6, 0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          contentPadding: EdgeInsets.only(left: 25, right: 25),
+                          title: Center(child: Text("Términos y condiciones")),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20.0))),
+                          content: Container(
+                            height: 500,
+                            width: 300,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text('Tratamiento de datos:'),
+                                  Text(
+                                    'Decreto 1377 de 2013:',
+                                  ),
+                                  Text(
+                                    '* Articulo ${1}' * 40,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          actions: <Widget>[
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: MaterialButton(
+                                elevation: 14.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: Text(
+                                  'volver',
+                                  style: TextStyle(
+                                    fontSize: 19.0,
+                                    color: Color(0xFF3F3F3F),
+                                  ),
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Padding(padding: EdgeInsets.only(top: 80.0)),
               MaterialButton(
                 elevation: 14.0,
                 shape: RoundedRectangleBorder(
@@ -145,14 +213,6 @@ class _HomePageState extends State<HomePage> {
                   Navigate.goToHelp(context);
                 },
               ),
-              Text(
-                'Al ingresar, ha aceptado términos y condiciones.',
-                style: TextStyle(
-                  fontSize: 13.0,
-                  color: Colors.brown,
-                ),
-                textAlign: TextAlign.center,
-              ),
             ],
           ),
         ),
@@ -161,14 +221,31 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+/* onPressed: () async {
+                              dynamic result = await _auth.SignInAnon();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content:
+                                    Text('Bienvenido, ingrese su consulta'),
+                              ));
+                              if (result == null) {
+                                print('Error signing in');
+                              } else {
+                                print('signed in');
+                                print(result.uid);
+                              }
+                              Navigator.pop(context);
+                            }, */
+
+/*   */
 class _EntryCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Container(
-          height: 286,
-          width: 286,
+          height: 216,
+          width: 216,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
@@ -182,41 +259,10 @@ class _EntryCircle extends StatelessWidget {
           ),
           child: ClipOval(
             child: Material(
-              color: Color(0xFF72828E),
+              color: Color.fromARGB(255, 112, 6, 0),
               child: InkWell(
                 splashColor: Colors.white,
                 onTap: () {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: SizedBox(
-                        width: 254,
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: const TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Consultorios',
-                                style: TextStyle(
-                                  fontSize: 45.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'jurídicos',
-                                style: TextStyle(
-                                  fontSize: 45.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
           ),
@@ -234,10 +280,18 @@ class _appBar extends StatelessWidget {
       toolbarHeight: 80.0,
       centerTitle: true,
       elevation: 14.0,
-      backgroundColor: Color(0xFF515463),
+      backgroundColor: Color.fromARGB(255, 112, 6, 0),
       title: const Text(
         'BIENVENIDO',
         style: TextStyle(fontSize: 35.0),
+      ),
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[Color(0xFFD10934), Color(0xFF7A0C29)]),
+        ),
       ),
     );
   }

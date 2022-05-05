@@ -1,7 +1,7 @@
 <!-- Top navigation -->
-<nav class="navbar navbar-expand-lg" style="background-color: #515463; padding: 15px;">
+<nav class="navbar navbar-expand-lg" style="background-color: #ffffff; padding: 15px; border-bottom: 2px solid rgb(112, 6, 0);">
   <div style="display: flex; justify-content: space-between; width: 100%;">
-    <h2 class="text-white">Bandeja de entrada</h2>
+    <h2 style="color: rgb(112, 6, 0); margin-left: 46px; font-size: 30px;">BANDEJA DE ENTRADA</h2>
     <a href="#" class="navbar-brand">
       <img src="https://toppng.com/uploads/preview/red-circle-1155276042606ekqvli9k.png" alt="" width="30" height="30">
     </a>
@@ -11,16 +11,16 @@
 <div class="container-fluid">
   <div class="row">
     <aside class="col-3 pt-3 text-center d-flex"
-      style="background-color: #72828E; height: 100vh; justify-content: center;">
-      <ul class="column p-0" style="list-style-type: none; color: #fff; font-size: 25px;">
+      style="background-color: rgba(92, 92, 92, 0.2); height: 100vh; justify-content: center;">
+      <ul class="column p-0" style="list-style-type: none; color: rgb(89, 89, 89); font-size: 25px;">
         <li class="list-group">
-          <h1 class="h1">Bienvenido</h1>
+          <h1 class="text-start">Bienvenido</h1>
         </li>
         <li style="margin: 25% 0">
           <h2 class="text-start">Filtros:</h2>
           <h5 class="text-start">Solicitudes por pagina: {{cantiSoli}}</h5>
 
-          <mat-slider style="width: 100%; color:#fff" thumbLabel tickInterval="8" step="1" min="3" max="8"
+          <mat-slider style="width: 100%; color: rgb(112, 6, 0)" thumbLabel tickInterval="8" step="1" min="3" max="8"
             [(ngModel)]="cantiSoli" aria-label="units"></mat-slider>
           <h5 class="text-start">Por estado: {{filtroEstado}}</h5>
           <select class="form-select" name="festados" id="festados" (change)="getSolicitudesFiltradas($event)">
@@ -29,7 +29,7 @@
               {{s.name}}
             </option>
           </select>
-          <button type="button" class="btn" style="background-color: #ffffff; color: #72828E; margin-top: 25px;"
+          <button type="button" class="btn" style="border-radius: 20px; background-color: rgb(112, 6, 0); color: #ffffff; margin-top: 25px; width: 100%;"
             (click)="restablecer()">
             Borrar filtros
           </button>
@@ -37,20 +37,20 @@
         <!-- Llamado SignOut() Api de AuthService -->
         <li class="list-group">
           <div class="redirectToLogin">
-            <button class="btn" style="background-color: #ffffff; color: #72828E;" (click)="anadir()">Añadir
+            <button class="btn" style="border-radius: 20px;background-color: rgb(112, 6, 0); color: #ffffff; width: 100%;" (click)="anadir()">Añadir
               Usuario </button>
             <div *ngIf="signup">
               <app-sign-up></app-sign-up>
             </div>
           </div>
-          <button class="btn" style="background-color: #ffffff; color: #72828E;
-           margin: 25px 50px 0px 50px;" (click)="authService.SignOut()">Cerrar
+          <button class="btn" style=" border-radius: 20px;background-color: rgb(112, 6, 0); color: #ffffff; width: 100%;
+           margin-top: 25px;" (click)="authService.SignOut()">Cerrar
             sesión</button>
         </li>
       </ul>
     </aside>
     <!-- Main content -->
-    <main role="main" class="col-9" style="color: #707070;">
+    <main role="main" class="col-9" style="color: rgb(112, 6, 0); margin-top: 0.5%;">
       <div class="inner-adjust">
         <div class="pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Solicitudes</h1>
@@ -78,14 +78,14 @@
                     <th scope="row">{{soli.uid}}</th>
                     <td>{{soli.nombre}}</td>
                     <td>
-                      <button style="background-color: #72828E;" class="btn text-white"
+                      <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" class="btn text-white"
                         (click)="generarPdf(soli.uid)">Ver más</button>
                     </td>
                     <td>
                       {{soli.estado}}
                     </td>
                     <td>
-                      <button style="background-color: #72828E;" type="button" class="btn text-white"
+                      <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" type="button" class="btn text-white"
                         (click)="openPopupEstado(soli.uid)">Cambiar
                       </button>
                       <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
@@ -107,13 +107,13 @@
                             <div class="modal-footer">
                               <div class="row">
                                 <div class="col">
-                                  <button type="button" class="btn text-white" style="background-color: #72828E;"
+                                  <button type="button" class="btn text-white" style="background-color: rgb(112, 6, 0); border-radius: 20px;"
                                     (click)="closePopupEstado(uid , estado)">
                                     Guardar
                                   </button>
                                 </div>
                                 <div class="col">
-                                  <button type="button" class="btn text-white" style="background-color: #72828E;"
+                                  <button type="button" class="btn text-white" style="background-color: rgb(112, 6, 0); border-radius: 20px;"
                                     (click)="cancelarPopUpEstado()">
                                     Cancelar
                                   </button>
@@ -160,11 +160,11 @@
                     <div class="modal-footer">
                       <div class="row">
                         <div class="col">
-                          <button style="background-color: #72828E;" class="btn text-white text-center"
+                          <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" class="btn text-white text-center"
                             (click)="downloadPDF()">Descargar</button>
                         </div>
                         <div class="col">
-                          <button type="button" class="btn text-white" style="background-color: #72828E;"
+                          <button type="button" class="btn text-white" style="background-color: rgb(112, 6, 0); border-radius: 20px;"
                             (click)="cancelarPopUpEstado()">
                             Cancelar
                           </button>

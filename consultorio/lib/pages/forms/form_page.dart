@@ -59,13 +59,6 @@ class _FormPageState extends State<FormPage> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFFFFF4EA), Color(0xFFBCB8B5)],
-            ),
-          ),
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
             children: <Widget>[
@@ -89,8 +82,9 @@ class _FormPageState extends State<FormPage> {
                           const Text(
                             'Estado civil:',
                             style: TextStyle(
-                                fontSize: 20.0,
-                                color: Color.fromARGB(255, 114, 114, 114)),
+                              fontSize: 20.0,
+                              color: Color(0xFF3F3F3F),
+                            ),
                           ),
                           SizedBox(width: 25.0),
                           _crearEstadoCivil(),
@@ -109,44 +103,52 @@ class _FormPageState extends State<FormPage> {
                       Divider(),
                       _crearDescripcion(),
                       Divider(),
-                      MaterialButton(
-                        color: Color(0xFF72828E),
-                        elevation: 14.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        child: const Text(
-                          'Enviar',
-                          style: TextStyle(
-                            fontSize: 22.0,
-                            color: Color(0xFFFFFFFF),
+                      Container(
+                        width: 250,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
+                            begin: FractionalOffset.topCenter,
+                            end: FractionalOffset.bottomCenter,
                           ),
                         ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            await DatabaseService(uid: user!.uid)
-                                .insertDataUser(
-                                    user.uid.toString(),
-                                    _nombre,
-                                    _identificacion,
-                                    _salario,
-                                    _edad,
-                                    _opcionSeleccionada,
-                                    _barrioResidencia,
-                                    _direccionCasa,
-                                    _telefonoCasa,
-                                    _direccionTrabajo,
-                                    _email,
-                                    _descripcionConsulta,
-                                    _estado);
+                        child: FlatButton(
+                          child: Text(
+                            'Enviar',
+                            style: TextStyle(
+                              fontSize: 22.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await DatabaseService(uid: user!.uid)
+                                  .insertDataUser(
+                                      user.uid.toString(),
+                                      _nombre,
+                                      _identificacion,
+                                      _salario,
+                                      _edad,
+                                      _opcionSeleccionada,
+                                      _barrioResidencia,
+                                      _direccionCasa,
+                                      _telefonoCasa,
+                                      _direccionTrabajo,
+                                      _email,
+                                      _descripcionConsulta,
+                                      _estado);
 
-                            estadoForm.stateForm = 'si';
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text('Algunos campos necesitan revisión'),
-                            ));
-                          }
-                        },
+                              estadoForm.stateForm = 'si';
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content:
+                                    Text('Algunos campos necesitan revisión'),
+                              ));
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -248,8 +250,7 @@ class _FormPageState extends State<FormPage> {
       children: [
         DropdownButton(
           borderRadius: BorderRadius.circular(15.0),
-          style: TextStyle(
-              fontSize: 18.0, color: Color.fromARGB(255, 114, 114, 114)),
+          style: TextStyle(fontSize: 18.0, color: Color(0xFF3F3F3F)),
           value: _opcionSeleccionada,
           items: getOpcionesDropDown(),
           onChanged: (opt) {
@@ -376,10 +377,18 @@ class _appBar extends StatelessWidget {
       toolbarHeight: 80.0,
       centerTitle: true,
       elevation: 14.0,
-      backgroundColor: Color(0xFF515463),
+      backgroundColor: Color.fromARGB(255, 112, 6, 0),
       title: const Text(
         'Ingrese su solicitud',
         style: TextStyle(fontSize: 35.0),
+      ),
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[Color(0xFFD10934), Color(0xFF7A0C29)]),
+        ),
       ),
     );
   }

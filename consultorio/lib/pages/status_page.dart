@@ -28,28 +28,35 @@ class _StatusPageState extends State<StatusPage> {
             AnimatedOpacity(
               opacity: _visible ? 1.0 : 0.0,
               duration: Duration(microseconds: 500),
-              child: MaterialButton(
-                color: Color(0xFF72828E),
-                elevation: 14.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-                child: Text(
-                  'Cerrar sesion',
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    color: Color(0xFFFFFFFF),
+              child: Container(
+                width: 250,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
                   ),
                 ),
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  //Navigate.goToWelcome(context);
-                  setState(() {
-                    _visible = !_visible;
-                  });
-                  estadoForm.stateForm = 'no';
+                child: FlatButton(
+                  child: Text(
+                    'Cerrar sesion',
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    //Navigate.goToWelcome(context);
+                    setState(() {
+                      _visible = !_visible;
+                    });
+                    estadoForm.stateForm = 'no';
 
-                  //Navigator.of(context).pop();
-                },
+                    //Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
           ],
@@ -67,10 +74,18 @@ class _AppBar extends StatelessWidget {
       toolbarHeight: 80.0,
       centerTitle: true,
       elevation: 14.0,
-      backgroundColor: Color(0xFF515463),
+      backgroundColor: Color.fromARGB(255, 112, 6, 0),
       title: const Text(
         'ESTADO SOLICITUD',
         style: TextStyle(fontSize: 35.0),
+      ),
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[Color(0xFFD10934), Color(0xFF7A0C29)]),
+        ),
       ),
     );
   }
@@ -83,8 +98,8 @@ class _EntryCircle extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
-          height: 320,
-          width: 320,
+          height: 250,
+          width: 250,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
@@ -96,19 +111,29 @@ class _EntryCircle extends StatelessWidget {
               ),
             ],
           ),
-          child: ClipOval(
-            child: Material(
-              color: Color(0xFF72828E),
-              child: InkWell(
-                splashColor: Colors.white,
-                onTap: () {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: getState(),
-                    ),
-                  ],
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(125.0)),
+              gradient: LinearGradient(
+                colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
+                begin: FractionalOffset.topCenter,
+                end: FractionalOffset.bottomCenter,
+              ),
+            ),
+            child: ClipOval(
+              child: Material(
+                color: Color.fromARGB(0, 112, 6, 0),
+                child: InkWell(
+                  splashColor: Colors.white,
+                  onTap: () {},
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: getState(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

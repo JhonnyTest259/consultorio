@@ -78,15 +78,7 @@ class _TemporalPageState extends State<TemporalPage>
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFFFFF4EA), Color(0xFFBCB8B5)],
-              ),
-            ),
-          ),
+          Container(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -104,7 +96,7 @@ class _TemporalPageState extends State<TemporalPage>
             mainAxisAlignment: MainAxisAlignment.end,
             children: const <Widget>[
               CircularProgressIndicator(
-                color: Colors.white,
+                color: Color.fromARGB(255, 112, 6, 0),
               ),
               Text(
                 'From',
