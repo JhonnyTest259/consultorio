@@ -1,12 +1,7 @@
-import 'dart:ffi';
-
 import 'package:consultorio/models/stateform.dart';
-import 'package:consultorio/pages/wrapper.dart';
-import 'package:consultorio/routes/navegate.dart';
 import 'package:consultorio/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:consultorio/models/stateform.dart';
 
 import '../../models/user.dart';
 
@@ -26,9 +21,10 @@ class _FormPageState extends State<FormPage> {
   String _direccionTrabajo = '';
   String _email = '';
   String _descripcionConsulta = '';
-  String _estado = 'Enviado';
+  final String _estado = 'Enviado';
+  bool isLoading = false;
 
-  List<String> _estadoCivil = [
+  final List<String> _estadoCivil = [
     'Seleccion',
     'Casado',
     'Soltero',
@@ -43,7 +39,6 @@ class _FormPageState extends State<FormPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -60,7 +55,8 @@ class _FormPageState extends State<FormPage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Container(
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 32.0, right: 32.0),
@@ -69,13 +65,13 @@ class _FormPageState extends State<FormPage> {
                   child: Column(
                     children: <Widget>[
                       _crearNombre(),
-                      Divider(),
+                      const Divider(),
                       _crearIdentificacion(),
-                      Divider(),
+                      const Divider(),
                       _crearSalario(),
-                      Divider(),
+                      const Divider(),
                       _crearEdad(),
-                      Divider(),
+                      const Divider(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -86,26 +82,26 @@ class _FormPageState extends State<FormPage> {
                               color: Color(0xFF3F3F3F),
                             ),
                           ),
-                          SizedBox(width: 25.0),
+                          const SizedBox(width: 25.0),
                           _crearEstadoCivil(),
-                          Divider(),
+                          const Divider(),
                         ],
                       ),
                       _crearBarrio(),
-                      Divider(),
+                      const Divider(),
                       _crearDireccionCasa(),
-                      Divider(),
+                      const Divider(),
                       _crearTelefono(),
-                      Divider(),
+                      const Divider(),
                       _crearDireccionTrabajo(),
-                      Divider(),
+                      const Divider(),
                       _crearEmail(),
-                      Divider(),
+                      const Divider(),
                       _crearDescripcion(),
-                      Divider(),
+                      const Divider(),
                       Container(
                         width: 250,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(25.0)),
                           gradient: LinearGradient(
                             colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
@@ -113,15 +109,19 @@ class _FormPageState extends State<FormPage> {
                             end: FractionalOffset.bottomCenter,
                           ),
                         ),
-                        child: FlatButton(
-                          child: Text(
-                            'Enviar',
-                            style: TextStyle(
-                              fontSize: 22.0,
-                              color: Colors.white,
-                            ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder(),
+                            primary: Colors.transparent,
                           ),
                           onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await Future.delayed(const Duration(seconds: 3));
+                            setState(() {
+                              isLoading = false;
+                            });
                             if (_formKey.currentState!.validate()) {
                               await DatabaseService(uid: user!.uid)
                                   .insertDataUser(
@@ -142,12 +142,25 @@ class _FormPageState extends State<FormPage> {
                               estadoForm.stateForm = 'si';
                             } else {
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
+                                  .showSnackBar(const SnackBar(
                                 content:
                                     Text('Algunos campos necesitan revisión'),
+                                backgroundColor: Color(0xFF7A0C29),
                               ));
                             }
                           },
+                          child: (isLoading)
+                              ? const SizedBox(
+                                  child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ))
+                              : const Text(
+                                  'Enviar',
+                                  style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
@@ -369,6 +382,7 @@ class _FormPageState extends State<FormPage> {
   }
 }
 
+// ignore: camel_case_types
 class _appBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -393,3 +407,39 @@ class _appBar extends StatelessWidget {
     );
   }
 }
+/* FlatButton(
+                          child: const Text(
+                            'Enviar',
+                            style: TextStyle(
+                              fontSize: 22.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await DatabaseService(uid: user!.uid)
+                                  .insertDataUser(
+                                      user.uid.toString(),
+                                      _nombre,
+                                      _identificacion,
+                                      _salario,
+                                      _edad,
+                                      _opcionSeleccionada,
+                                      _barrioResidencia,
+                                      _direccionCasa,
+                                      _telefonoCasa,
+                                      _direccionTrabajo,
+                                      _email,
+                                      _descripcionConsulta,
+                                      _estado);
+
+                              estadoForm.stateForm = 'si';
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content:
+                                    Text('Algunos campos necesitan revisión'),
+                              ));
+                            }
+                          },
+                        ), */

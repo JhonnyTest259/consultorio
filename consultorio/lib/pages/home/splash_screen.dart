@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
@@ -22,12 +24,12 @@ class _TemporalPageState extends State<TemporalPage>
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      Timer(Duration(seconds: 3), () {
+      Timer(const Duration(seconds: 5), () {
         Navigator.of(context)
+            // ignore: unnecessary_new
             .pushReplacement(new MaterialPageRoute(builder: (context) {
           final user = Provider.of<MyUser?>(context);
           final estadoForm = Provider.of<StateForm>(context);
-
           if (user != null) {
             while (estadoForm.estadoForm) {
               FirebaseFirestore.instance
@@ -38,10 +40,8 @@ class _TemporalPageState extends State<TemporalPage>
                 querySnapchot.docs.forEach((doc) {
                   if (doc['estado'] != '') {
                     estadoForm.stateForm = 'si';
-                    print(estadoForm.stateForm);
                   } else {
                     estadoForm.stateForm = 'no';
-                    print('no');
                   }
                 });
               });
@@ -87,7 +87,7 @@ class _TemporalPageState extends State<TemporalPage>
                 height: 250,
                 width: 250,
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(top: 40.0),
               ),
             ],

@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
   bool valueT = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,12 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(top: 32.0)),
+              const Padding(padding: EdgeInsets.only(top: 32.0)),
               _EntryCircle(),
-              Padding(padding: EdgeInsets.only(top: 100.0)),
+              const Padding(padding: EdgeInsets.only(top: 100.0)),
               Container(
                 width: 250,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(25.0)),
                   gradient: LinearGradient(
                     colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 child: FlatButton(
-                  child: Text(
+                  child: const Text(
                     'Ingresar',
                     style: TextStyle(
                       fontSize: 22.0,
@@ -47,9 +48,15 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onPressed: () async {
                     if (valueT) {
-                      print(valueT);
+                      setState(() {
+                        isLoading = true;
+                      });
+                      await Future.delayed(const Duration(seconds: 5));
+                      setState(() {
+                        isLoading = false;
+                      });
                       dynamic result = await _auth.SignInAnon();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Bienvenido, ingrese su consulta'),
                         backgroundColor: Color(0xFF7A0C29),
                       ));
@@ -60,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                         print(result.uid);
                       }
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text('Debes aceptar términos y condiciones.'),
                         backgroundColor: Color(0xFF7A0C29),
                       ));
@@ -73,10 +80,10 @@ class _HomePageState extends State<HomePage> {
                 children: <Widget>[
                   Checkbox(
                     activeColor: Color(0xFF7A0C29),
-                    value: this.valueT,
+                    value: valueT,
                     onChanged: (bool? value) {
                       setState(() {
-                        this.valueT = value!;
+                        valueT = value!;
                       });
                     },
                   ),
@@ -110,9 +117,11 @@ class _HomePageState extends State<HomePage> {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          contentPadding: EdgeInsets.only(left: 25, right: 25),
-                          title: Center(child: Text("Términos y condiciones")),
-                          shape: RoundedRectangleBorder(
+                          contentPadding:
+                              const EdgeInsets.only(left: 25, right: 25),
+                          title: const Center(
+                              child: Text("Términos y condiciones")),
+                          shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20.0))),
                           content: Container(
@@ -122,11 +131,11 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
-                                  Text('Tratamiento de datos:'),
-                                  Text(
+                                  const Text('Tratamiento de datos:'),
+                                  const Text(
                                     'Decreto 1377 de 2013:',
                                   ),
                                   Text(
@@ -144,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   'volver',
                                   style: TextStyle(
                                     fontSize: 19.0,
@@ -161,20 +170,27 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.only(top: 80.0)),
+              const Padding(padding: EdgeInsets.only(top: 50.0)),
+              (isLoading)
+                  ? const SizedBox(
+                      child: CircularProgressIndicator(
+                        color: Color.fromARGB(255, 112, 6, 0),
+                      ),
+                    )
+                  : const Text(''),
               MaterialButton(
                 elevation: 14.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
-                child: Text(
+                child: const Text(
                   'Ayuda',
                   style: TextStyle(
                     fontSize: 19.0,
                     color: Colors.brown,
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   Navigate.goToHelp(context);
                 },
               ),

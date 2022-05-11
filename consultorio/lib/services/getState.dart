@@ -25,7 +25,7 @@ class _getStateState extends State<getState> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Text(
+              return const Text(
                 'Algo fue mal',
                 style: TextStyle(
                   fontSize: 25.0,
@@ -35,7 +35,7 @@ class _getStateState extends State<getState> {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text(
+              return const Text(
                 "Enviando...",
                 style: TextStyle(
                   fontSize: 45.0,
@@ -52,7 +52,7 @@ class _getStateState extends State<getState> {
                   title: Center(
                     child: Text(
                       "${data['estado']}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 45.0,
                         color: Colors.white,
                       ),
@@ -64,7 +64,7 @@ class _getStateState extends State<getState> {
           },
         );
       } else {
-        return Text(
+        return const Text(
           'Sesion cerrada',
           style: TextStyle(
             fontSize: 45.0,
@@ -74,7 +74,7 @@ class _getStateState extends State<getState> {
       }
     } catch (e) {
       print("Error estado:" + e.toString());
-      return Text('Error');
+      return const Text('Error');
     }
   }
 }

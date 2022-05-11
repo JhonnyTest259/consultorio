@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:consultorio/models/stateform.dart';
 import 'package:consultorio/models/user.dart';
 import 'package:consultorio/pages/forms/form_page.dart';
@@ -30,7 +28,7 @@ class MyApp extends StatelessWidget {
           value: AuthService().user,
         ),
         ChangeNotifierProvider(
-          create: (_) => StateForm(),
+          create: (context) => StateForm(),
         ),
       ],
       child: MaterialApp(

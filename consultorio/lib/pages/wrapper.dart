@@ -17,7 +17,6 @@ class Wrapper extends StatelessWidget {
 
     //return either home or Authenticate widget
     if (user != null) {
-      print('DESDE EL WRAPPER ${estadoForm.stateForm}');
       //con esto podemos ver si ya se envio el formulario
       if (estadoForm.stateForm == 'si') {
         return StatusPage();
