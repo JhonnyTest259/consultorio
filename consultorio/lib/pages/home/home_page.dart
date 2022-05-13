@@ -12,6 +12,7 @@ class _HomePageState extends State<HomePage> {
   final AuthService _auth = AuthService();
   bool valueT = false;
   bool isLoading = false;
+  bool isButtonActive = true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,33 +47,42 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                     ),
                   ),
-                  onPressed: () async {
-                    if (valueT) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      await Future.delayed(const Duration(seconds: 5));
-                      setState(() {
-                        isLoading = false;
-                      });
-                      dynamic result = await _auth.SignInAnon();
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Bienvenido, ingrese su consulta'),
-                        backgroundColor: Color(0xFF7A0C29),
-                      ));
-                      if (result == null) {
-                        print('Error signing in');
-                      } else {
-                        print('signed in');
-                        print(result.uid);
-                      }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Debes aceptar términos y condiciones.'),
-                        backgroundColor: Color(0xFF7A0C29),
-                      ));
-                    }
-                  },
+                  onPressed: isButtonActive
+                      ? () async {
+                          if (valueT) {
+                            setState(() {
+                              isButtonActive = false;
+                              isLoading = true;
+                            });
+                            await Future.delayed(const Duration(seconds: 5));
+                            setState(() {
+                              isLoading = false;
+                            });
+                            dynamic result = await _auth.SignInAnon();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Bienvenido, ingrese su consulta'),
+                              backgroundColor: Color(0xFF7A0C29),
+                            ));
+                            if (result == null) {
+                              print('Error signing in');
+                            } else {
+                              print('signed in');
+                              print(result.uid);
+                            }
+                          } else {
+                            setState(() => isButtonActive = false);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content:
+                                  Text('Debes aceptar términos y condiciones.'),
+                              backgroundColor: Color(0xFF7A0C29),
+                            ));
+                            await Future.delayed(const Duration(seconds: 5));
+                            setState(() => isButtonActive = true);
+                          }
+                        }
+                      : null,
                 ),
               ),
               Row(

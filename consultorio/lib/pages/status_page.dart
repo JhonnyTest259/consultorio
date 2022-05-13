@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/stateform.dart';
 import '../services/getState.dart';
@@ -30,7 +31,7 @@ class _StatusPageState extends State<StatusPage> {
               duration: Duration(microseconds: 500),
               child: Container(
                 width: 250,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(25.0)),
                   gradient: LinearGradient(
                     colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
@@ -39,7 +40,7 @@ class _StatusPageState extends State<StatusPage> {
                   ),
                 ),
                 child: FlatButton(
-                  child: Text(
+                  child: const Text(
                     'Cerrar sesion',
                     style: TextStyle(
                       fontSize: 22.0,
@@ -53,7 +54,9 @@ class _StatusPageState extends State<StatusPage> {
                       _visible = !_visible;
                     });
                     estadoForm.stateForm = 'no';
-
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.remove("enviado");
                     //Navigator.of(context).pop();
                   },
                 ),
@@ -112,7 +115,7 @@ class _EntryCircle extends StatelessWidget {
             ],
           ),
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(125.0)),
               gradient: LinearGradient(
                 colors: [Color(0xFFD10934), Color(0xFF7A0C29)],
