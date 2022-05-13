@@ -2,6 +2,7 @@ import 'package:consultorio/models/stateform.dart';
 import 'package:consultorio/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/user.dart';
 
@@ -23,6 +24,7 @@ class _FormPageState extends State<FormPage> {
   String _descripcionConsulta = '';
   final String _estado = 'Enviado';
   bool isLoading = false;
+  bool isButtonActive = true;
 
   final List<String> _estadoCivil = [
     'Seleccion',
@@ -48,7 +50,7 @@ class _FormPageState extends State<FormPage> {
     final estadoForm = Provider.of<StateForm>(context);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: const Size.fromHeight(80.0),
         child: _appBar(),
       ),
       body: GestureDetector(
@@ -114,41 +116,46 @@ class _FormPageState extends State<FormPage> {
                             shape: const StadiumBorder(),
                             primary: Colors.transparent,
                           ),
-                          onPressed: () async {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            await Future.delayed(const Duration(seconds: 3));
-                            setState(() {
-                              isLoading = false;
-                            });
-                            if (_formKey.currentState!.validate()) {
-                              await DatabaseService(uid: user!.uid)
-                                  .insertDataUser(
-                                      user.uid.toString(),
-                                      _nombre,
-                                      _identificacion,
-                                      _salario,
-                                      _edad,
-                                      _opcionSeleccionada,
-                                      _barrioResidencia,
-                                      _direccionCasa,
-                                      _telefonoCasa,
-                                      _direccionTrabajo,
-                                      _email,
-                                      _descripcionConsulta,
-                                      _estado);
+                          onPressed: isButtonActive
+                              ? () async {
+                                  setState(() {
+                                    isLoading = true;
+                                    isButtonActive = false;
+                                  });
+                                  await Future.delayed(
+                                      const Duration(seconds: 3));
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  if (_formKey.currentState!.validate()) {
+                                    guardarEstado('si');
+                                    await DatabaseService(uid: user!.uid)
+                                        .insertDataUser(
+                                            user.uid.toString(),
+                                            _nombre,
+                                            _identificacion,
+                                            _salario,
+                                            _edad,
+                                            _opcionSeleccionada,
+                                            _barrioResidencia,
+                                            _direccionCasa,
+                                            _telefonoCasa,
+                                            _direccionTrabajo,
+                                            _email,
+                                            _descripcionConsulta,
+                                            _estado);
 
-                              estadoForm.stateForm = 'si';
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content:
-                                    Text('Algunos campos necesitan revisión'),
-                                backgroundColor: Color(0xFF7A0C29),
-                              ));
-                            }
-                          },
+                                    estadoForm.stateForm = 'si';
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          'Algunos campos necesitan revisión'),
+                                      backgroundColor: Color(0xFF7A0C29),
+                                    ));
+                                  }
+                                }
+                              : null,
                           child: (isLoading)
                               ? const SizedBox(
                                   child: CircularProgressIndicator(
@@ -172,6 +179,12 @@ class _FormPageState extends State<FormPage> {
         ),
       ),
     );
+  }
+
+  Future<void> guardarEstado(estado) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString("enviado", estado);
   }
 
   _crearNombre() {
@@ -407,39 +420,3 @@ class _appBar extends StatelessWidget {
     );
   }
 }
-/* FlatButton(
-                          child: const Text(
-                            'Enviar',
-                            style: TextStyle(
-                              fontSize: 22.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              await DatabaseService(uid: user!.uid)
-                                  .insertDataUser(
-                                      user.uid.toString(),
-                                      _nombre,
-                                      _identificacion,
-                                      _salario,
-                                      _edad,
-                                      _opcionSeleccionada,
-                                      _barrioResidencia,
-                                      _direccionCasa,
-                                      _telefonoCasa,
-                                      _direccionTrabajo,
-                                      _email,
-                                      _descripcionConsulta,
-                                      _estado);
-
-                              estadoForm.stateForm = 'si';
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content:
-                                    Text('Algunos campos necesitan revisión'),
-                              ));
-                            }
-                          },
-                        ), */

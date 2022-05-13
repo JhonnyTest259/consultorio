@@ -1,16 +1,10 @@
-// ignore_for_file: unnecessary_new
-
 import 'dart:async';
 
 import 'package:after_layout/after_layout.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultorio/pages/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../models/stateform.dart';
-import '../../models/user.dart';
 
 class TemporalPage extends StatefulWidget {
   @override
@@ -21,46 +15,20 @@ class _TemporalPageState extends State<TemporalPage>
     with AfterLayoutMixin<TemporalPage> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen') ?? false);
+    //bool _seen = (prefs.getBool('seen') ?? false);
 
-    if (_seen) {
-      Timer(const Duration(seconds: 5), () {
-        Navigator.of(context)
-            // ignore: unnecessary_new
-            .pushReplacement(new MaterialPageRoute(builder: (context) {
-          final user = Provider.of<MyUser?>(context);
-          final estadoForm = Provider.of<StateForm>(context);
-          if (user != null) {
-            while (estadoForm.estadoForm) {
-              FirebaseFirestore.instance
-                  .collection('solicitudes')
-                  .where('uid', isEqualTo: user.uid)
-                  .get()
-                  .then((QuerySnapshot querySnapchot) {
-                querySnapchot.docs.forEach((doc) {
-                  if (doc['estado'] != '') {
-                    estadoForm.stateForm = 'si';
-                  } else {
-                    estadoForm.stateForm = 'no';
-                  }
-                });
-              });
+    //if (_seen) {
+    Timer(const Duration(seconds: 5), () {
+      Navigator.of(context)
+          // ignore: unnecessary_new
+          .pushReplacement(new MaterialPageRoute(builder: (context) {
+        return Wrapper();
+      }));
+    });
 
-              estadoForm.estadoForm = false;
-            }
-          } else {
-            print('no hay aun');
-          }
-          return Wrapper();
-        }));
-
-        //GetStatus(user);
-      });
-    } else {
-      await prefs.setBool('seen', true);
-      Navigator.of(context).pushReplacement(
-          new MaterialPageRoute(builder: (context) => new Wrapper()));
-    }
+    //} else {
+    //   await prefs.setBool('seen', true);
+    // }
   }
 
   @override
@@ -68,7 +36,6 @@ class _TemporalPageState extends State<TemporalPage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -123,3 +90,30 @@ class _TemporalPageState extends State<TemporalPage>
     );
   }
 }
+
+
+/*    final user = Provider.of<MyUser?>(context);
+          final estadoForm = Provider.of<StateForm>(context);
+          if (user != null) {
+            while (estadoForm.estadoForm) {
+              FirebaseFirestore.instance
+                  .collection('solicitudes')
+                  .where('uid', isEqualTo: user.uid)
+                  .get()
+                  .then((QuerySnapshot querySnapchot) {
+                querySnapchot.docs.forEach((doc) {
+                  if (doc['estado'] != '') {
+                    estadoForm.stateForm = 'si';
+                  } else {
+                    estadoForm.stateForm = 'no';
+                  }
+                });
+              });
+
+              estadoForm.estadoForm = false;
+            }
+          } else {
+            print('no hay aun');
+          } 
+          
+          */
