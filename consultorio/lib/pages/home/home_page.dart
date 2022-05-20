@@ -1,3 +1,4 @@
+import 'package:consultorio/pages/home/terminos.dart';
 import 'package:consultorio/routes/navegate.dart';
 import 'package:consultorio/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -140,17 +141,11 @@ class _HomePageState extends State<HomePage> {
                             child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  const SizedBox(
+                                children: const <Widget>[
+                                  SizedBox(
                                     height: 20,
                                   ),
-                                  const Text('Tratamiento de datos:'),
-                                  const Text(
-                                    'Decreto 1377 de 2013:',
-                                  ),
-                                  Text(
-                                    '* Articulo ${1}' * 40,
-                                  ),
+                                  terminos(),
                                 ],
                               ),
                             ),

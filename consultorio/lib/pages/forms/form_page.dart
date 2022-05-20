@@ -14,7 +14,6 @@ class FormPage extends StatefulWidget {
 class _FormPageState extends State<FormPage> {
   String _nombre = '';
   String _identificacion = '';
-  String _salario = '';
   String _edad = '';
   String _barrioResidencia = '';
   String _direccionCasa = '';
@@ -23,21 +22,27 @@ class _FormPageState extends State<FormPage> {
   String _email = '';
   String _descripcionConsulta = '';
   final String _estado = 'Enviado';
-  bool isLoading = false;
-  bool isButtonActive = true;
-
   final List<String> _estadoCivil = [
     'Seleccion',
     'Casado',
     'Soltero',
     'Viudo',
   ];
+  final List<String> _salario = [
+    'Seleccion',
+    '0 a 1 SMLV',
+    '2 a 3 SMLV',
+    '4 o más SMLV',
+  ];
 
   String _opcionSeleccionada = 'Seleccion';
+  String _opcionSeleccionadaSalario = 'Seleccion';
 
   final _formKey = GlobalKey<FormState>();
 
   bool sendForm = false;
+  bool isLoading = false;
+  bool isButtonActive = true;
 
   @override
   void initState() {
@@ -70,7 +75,21 @@ class _FormPageState extends State<FormPage> {
                       const Divider(),
                       _crearIdentificacion(),
                       const Divider(),
-                      _crearSalario(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const Text(
+                            'Salario:',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                          ),
+                          const SizedBox(width: 25.0),
+                          _crearSalario(),
+                          const Divider(),
+                        ],
+                      ),
                       const Divider(),
                       _crearEdad(),
                       const Divider(),
@@ -134,7 +153,7 @@ class _FormPageState extends State<FormPage> {
                                             user.uid.toString(),
                                             _nombre,
                                             _identificacion,
-                                            _salario,
+                                            _opcionSeleccionadaSalario,
                                             _edad,
                                             _opcionSeleccionada,
                                             _barrioResidencia,
@@ -207,6 +226,7 @@ class _FormPageState extends State<FormPage> {
 
   _crearIdentificacion() {
     return TextFormField(
+      keyboardType: TextInputType.number,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Debes introducir tu identificación';
@@ -222,21 +242,34 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
+  List<DropdownMenuItem<String>> getOpcionesDropDownSalario() {
+    List<DropdownMenuItem<String>> lista = [];
+
+    _salario.forEach((estado) {
+      lista.add(DropdownMenuItem(
+        child: Text(estado),
+        value: estado,
+      ));
+    });
+
+    return lista;
+  }
+
   _crearSalario() {
-    return TextFormField(
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Debes introducir tu salario';
-        }
-      },
-      decoration: InputDecoration(
-        hintText: 'Salario',
-      ),
-      textInputAction: TextInputAction.next,
-      onChanged: (valor) => setState(() {
-        _salario = valor;
-      }),
+    return Row(
+      children: [
+        DropdownButton(
+          borderRadius: BorderRadius.circular(15.0),
+          style: TextStyle(fontSize: 18.0, color: Color(0xFF3F3F3F)),
+          value: _opcionSeleccionadaSalario,
+          items: getOpcionesDropDownSalario(),
+          onChanged: (optS) {
+            setState(() {
+              _opcionSeleccionadaSalario = optS.toString();
+            });
+          },
+        ),
+      ],
     );
   }
 
