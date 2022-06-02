@@ -55,10 +55,6 @@ class _HomePageState extends State<HomePage> {
                               isButtonActive = false;
                               isLoading = true;
                             });
-                            await Future.delayed(const Duration(seconds: 5));
-                            setState(() {
-                              isLoading = false;
-                            });
                             dynamic result = await _auth.SignInAnon();
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(

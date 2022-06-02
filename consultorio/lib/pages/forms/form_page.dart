@@ -141,11 +141,6 @@ class _FormPageState extends State<FormPage> {
                                     isLoading = true;
                                     isButtonActive = false;
                                   });
-                                  await Future.delayed(
-                                      const Duration(seconds: 3));
-                                  setState(() {
-                                    isLoading = false;
-                                  });
                                   if (_formKey.currentState!.validate()) {
                                     guardarEstado('si');
                                     await DatabaseService(uid: user!.uid)
