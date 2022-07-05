@@ -161,6 +161,10 @@ class _FormPageState extends State<FormPage> {
 
                                     estadoForm.stateForm = 'si';
                                   } else {
+                                    setState(() {
+                                      isLoading = false;
+                                      isButtonActive = true;
+                                    });
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
                                       content: Text(
