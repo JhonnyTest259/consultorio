@@ -2,9 +2,12 @@ import { Injectable, NgZone } from '@angular/core';
 import { User } from '../interfaces/user';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore,AngularFirestoreDocument} from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +18,7 @@ export class AuthService {
     public afs: AngularFirestore, // Servicio de firestore
     public afAuth: AngularFireAuth, // servicio de autenticacion fire
     public router: Router,
-    public ngZone: NgZone,
+    public ngZone: NgZone
   ) {
     /* guarda un usuario localmente y retorna null cuando cierra sesion */
     this.afAuth.authState.subscribe((user) => {
@@ -34,9 +37,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
-        });
+        this.isLoggedIn(result.user);
         this.SetUserData(result.user);
       })
       .catch((error) => {
@@ -76,9 +77,14 @@ export class AuthService {
       });
   }
   // Retorna verdadero cuando hay un usuario y esta verificado su correo
-  get isLoggedIn(): boolean {
+  isLoggedIn(sesionUser?: any): Observable<boolean> {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    if (user) {
+      console.log(user);
+      return of(user && user.emailVerified ? true : false);
+    }
+    console.log(sesionUser);
+    return of(sesionUser && sesionUser.emailVerified ? true : false);
   }
 
   // Logica de autenticacion

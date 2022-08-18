@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [SignInComponent, ForgotPasswordComponent],
@@ -23,5 +24,6 @@ import { FormsModule } from '@angular/forms';
     AngularFireDatabaseModule,
     FormsModule,
   ], 
+  providers: [AuthService]
 })
 export class AuthModule {}
