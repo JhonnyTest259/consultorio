@@ -1,31 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
-
-import { NgxPaginationModule } from 'ngx-pagination';
-import { DashboardComponent } from './solicitudes/dashboard/dashboard.component';
 import { AuthService } from './auth/services/auth.service';
 import { AuthModule } from './auth/auth.module';
-import { MaterialModule } from './material/material.module';
+import { SolicitudesModule } from './solicitudes/solicitudes.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    NgxPaginationModule,
     AuthModule,
-    MaterialModule
-    
+    SolicitudesModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

@@ -19,10 +19,10 @@
         </li>
         <li style="margin: 25% 0">
           <h2 class="text-start">Filtros:</h2>
-          <h5 class="text-start">Solicitudes por pagina: {{cantiSoli}}</h5>
+          <!-- <h5 class="text-start">Solicitudes por pagina: {{cantiSoli}}</h5> -->
 
-          <mat-slider style="width: 100%; color: rgb(112, 6, 0)" thumbLabel tickInterval="8" step="1" min="3" max="8"
-            [(ngModel)]="cantiSoli" aria-label="units"></mat-slider>
+          <!-- <mat-slider style="width: 100%; color: rgb(112, 6, 0)" thumbLabel tickInterval="8" step="1" min="3" max="8"
+            [(ngModel)]="cantiSoli" aria-label="units"></mat-slider> -->
           <h5 class="text-start">Por estado: {{filtroEstado}}</h5>
           <!--  -->
           <select class="form-select" name="festados" id="festados" (change)="getSolicitudesFiltradas($event)">
@@ -64,76 +64,12 @@
 
         <mat-spinner *ngIf="solicitud.length === 0" style="border-radius: 10px; background-color: rgba(0, 0, 0, 0.242); position: absolute; 
         width: 73.5vw; height: 44vh; transition: opacity 0.35s;"></mat-spinner>
-        <div class="row" *ngIf="authService.userData as user">
+        <div class="row">
           <div class="col-md-12">
             <div class="media" style="overflow: auto">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Codigo</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descargar</th>
-                    <th scope="col">Estado</th>
-                    <th> </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <div class="text-center" *ngIf="solicitud.length === 0"><strong>Sin contenido aún</strong></div>
-                  <tr *ngFor="let soli of solicitud | paginate: { itemsPerPage: cantiSoli, currentPage: page}">
-                    <th scope="row">{{soli.uid}}</th>
-                    <td>{{soli.nombre}}</td>
-                    <td>
-                      <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" class="btn text-white"
-                        (click)="generarPdf(soli.uid)">Ver más</button>
-                    </td>
-                    <td>
-                      {{soli.estado}}
-                    </td>
-                    <td>
-                      <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" type="button"
-                        class="btn text-white" (click)="openPopupEstado(soli.uid)">Cambiar
-                      </button>
-                      <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
-                        role="dialog" [ngStyle]="{'display':displayStyle}">
-                        <div class="modal-dialog" role="document" style="margin: 10% auto;">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Cambiar estado</h4>
-                            </div>
-                            <div class="modal-body">
-                              <p><strong>Solicitud:</strong> {{uid}}</p>
-                              <select class="form-select" name="estados" id="estados" (change)="asignarEstado($event)">
-                                <option selected>--SELECCIONE--</option>
-                                <option *ngFor="let s of listaEstados" value="s.id" [value]="s.name">
-                                  {{s.name}}
-                                </option>
-                              </select>
-                            </div>
-                            <div class="modal-footer">
-                              <div class="row">
-                                <div class="col">
-                                  <button type="button" class="btn text-white"
-                                    style="background-color: rgb(112, 6, 0); border-radius: 20px;"
-                                    (click)="ActualizarEstado(uid , estado)">
-                                    Guardar
-                                  </button>
-                                </div>
-                                <div class="col">
-                                  <button type="button" class="btn text-white"
-                                    style="background-color: rgb(112, 6, 0); border-radius: 20px;"
-                                    (click)="cancelarPopUpEstado()">
-                                    Cancelar
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <app-tabla-solicitudes [solicitud]="solicitud" 
+                                     (estados)="ActualizarEstado($event)">
+              </app-tabla-solicitudes>
               <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
                 role="dialog" [ngStyle]="{'display':pdfStyle}">
                 <div class="modal-dialog" role="document" style="min-width: 600px; margin: 10% auto;">
@@ -183,9 +119,7 @@
               </div>
 
             </div>
-            <pagination-controls class="my-pagination" (pageChange)="page = $event" previousLabel="Anterior"
-              nextLabel="Siguiente" [responsive]="true">
-            </pagination-controls>
+
           </div>
         </div>
       </div>

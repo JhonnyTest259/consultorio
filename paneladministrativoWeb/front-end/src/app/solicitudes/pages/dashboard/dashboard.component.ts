@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/services/auth.service';
-import { Solicitudes } from 'src/app/models/solicitudes';
+import { AuthService } from '../../../auth/services/auth.service';
+import { Solicitudes } from 'src/app/solicitudes/interfaces/solicitudes';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { SolicitudesService } from 'src/app/solicitudes/services/solicitudes.service';
+import { MensajeComponent } from '../../components/mensaje/mensaje.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,15 +21,10 @@ export class DashboardComponent implements OnInit {
   selectedValue = null;
   estado:string = '';
   filtroEstado = '';
-  boolEstado = false;
   signup = false;
   uid = '';
-  displayStyle = 'none';
   pdfStyle = 'none';
   pdfSoli = new Solicitudes();
-  public page?: number;
-  showSpinner = '0';
-  cantiSoli = 5;
   listaEstados = [
     { id: 0, name: 'Enviado' },
     { id: 1, name: 'Aceptado' },
@@ -38,7 +35,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private _solicitudService: SolicitudesService,
     public authService: AuthService,
-    public db: AngularFirestore
+    public db: AngularFirestore,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +56,22 @@ export class DashboardComponent implements OnInit {
         });
       });
   }
+
+  ActualizarEstado(event: any) {
+    this._solicitudService.actualizarSolicitud(event.uid, event.estado).then(
+      () => {
+        this.solicitud = [];
+        this._snackBar.openFromComponent(MensajeComponent, {
+          duration: 3000,
+        })
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+
   obtenerSolicitudes() {
     this._solicitudService.getSolicitudes().subscribe((data) => {
       data.map((soli: any) => {
@@ -129,34 +143,15 @@ export class DashboardComponent implements OnInit {
     /*  doc.text(`${soli.nombre}`, 10, 10);
      doc.save(`${soli._uid}.pdf`);  */
   }
-  openPopupEstado(uid: string) {
-    this.uid = uid;
-    this.displayStyle = 'block';
-  }
- 
-  ActualizarEstado(uid: string, estado: string) {
-    this._solicitudService.actualizarSolicitud(uid, estado).then(() => {
-      this.displayStyle = 'none';
-      this.solicitud = [];
-      console.log('Actualizado con exito');
-    }, error => {
-      console.log(error);
-    })
-  }
+
   cancelarPopUpEstado() {
-    this.displayStyle = 'none';
     this.pdfStyle = 'none';
-  }
-  asignarEstado(e: any) {
-    this.estado = e.target.value;
   }
 
   restablecer() {
     this.solicitud = [];
     this.filtroEstado = '';
-    this.boolEstado = false;
     this.obtenerSolicitudes();
-    this.cantiSoli = 5;
   }
   anadir() {
     this.signup = true;

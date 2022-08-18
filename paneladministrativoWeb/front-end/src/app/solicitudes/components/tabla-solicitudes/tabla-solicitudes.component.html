@@ -1,0 +1,76 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Codigo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descargar</th>
+            <th scope="col">Estado</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <div class="text-center" *ngIf="solicitud.length === 0"><strong>Sin contenido aún</strong></div>
+        <tr class="animate__animated animate__fadeIn animate__delay-0.4s"
+            *ngFor="let soli of solicitud | paginate: { itemsPerPage: cantiSoli, currentPage: page}">
+            <th scope="row">{{soli.uid}}</th>
+            <td>{{soli.nombre}}</td>
+            <td>
+                <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" class="btn text-white">Ver
+                    más</button>
+                <!-- (click)="generarPdf(soli.uid)" -->
+            </td>
+            <td>
+                {{soli.estado}}
+            </td>
+            <td>
+                <button style="background-color: rgb(112, 6, 0); border-radius: 20px;" type="button"
+                    class="btn text-white" (click)="openPopupEstado(soli.uid)">Cambiar
+
+                </button>
+                <div class="modal text-dark rounded" style=" background-color: rgba(0, 0, 0, 0.2);" tabindex="-1"
+                    role="dialog" [ngStyle]="{'display':displayStyle}">
+                    <div class="modal-dialog" role="document" style="margin: 10% auto;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Cambiar estado</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Solicitud:</strong> {{uid}}</p>
+                                <select class="form-select" name="estados" id="estados"
+                                    (change)="asignarEstado($event)">
+                                    <option selected>--SELECCIONE--</option>
+                                    <option *ngFor="let s of listaEstados" value="s.id" [value]="s.name">
+                                        {{s.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="button" class="btn text-white"
+                                            style="background-color: rgb(112, 6, 0); border-radius: 20px;"
+                                            (click)="ActualizarEstado(uid , estado)">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button type="button" class="btn text-white"
+                                            style="background-color: rgb(112, 6, 0); border-radius: 20px;"
+                                            (click)="cancelarPopUpEstado()">
+                                            Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<pagination-controls class="my-pagination" (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Siguiente"
+    [responsive]="true">
+</pagination-controls>
