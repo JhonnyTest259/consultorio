@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../../shared/services/auth.service";
-import { DashboardComponent } from '../dashboard/dashboard.component';
+import { AuthService } from "../../services/auth.service";
+import { DashboardComponent } from '../../../solicitudes/dashboard/dashboard.component';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',

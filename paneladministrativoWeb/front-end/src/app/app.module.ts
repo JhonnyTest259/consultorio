@@ -13,13 +13,13 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { AuthService } from './shared/services/auth.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import {MatSliderModule} from '@angular/material/slider';
+import { DashboardComponent } from './solicitudes/dashboard/dashboard.component';
+import { SignInComponent } from './auth/pages/sign-in/sign-in.component';
+import { SignUpComponent } from './auth/pages/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './solicitudes/forgot-password/forgot-password.component';
+import { AuthService } from './auth/services/auth.service';
 
 const MaterialComponents = [
   MatProgressSpinnerModule,
